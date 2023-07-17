@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% comment %} {% extends "socialaccount/base.html" %} {% endcomment %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'css/socialaccount/login.css'%}">
+  <title>구글 로그인</title>
+</head>
+
+<!-- 주요 기능 -->
+<div class="google">
+  <!-- 구글로 로그인 -->
+  {% if process == "connect" %}
+  <h1 id="title">{% blocktrans with provider.name as provider %}Connect {{ provider }}{% endblocktrans %} &middot;&middot;</h1>
+  <!-- 구글로 회원가입 -->
+  {% else %}
+  <h1 id="title">{% blocktrans with provider.name as provider %}Sign In Via {{ provider }}{% endblocktrans %} &middot;&middot;</h1>
+  {% endif %}
+
+  <form method="post" class="button_area">
+    {% csrf_token %}
+    <button type="submit" id="button">{% trans "Continue" %}</button>
+  </form>
+</div>
+
+{% endblock %}

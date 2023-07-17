@@ -1,0 +1,132 @@
+@font-face {
+    font-family: "PretendardVariable.woff2";
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+  
+
+/* 배경 */
+body {
+    margin: 0px;
+}
+
+form {
+    font-family: "PretendardVariable.woff2";
+    position: relative;
+    margin-top: 3%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+#loading {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.8;
+    background: white;
+    z-index: 99;
+}
+#loading > img {
+    position: absolute;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+.container {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    top: 10%;
+}
+.form_container p {
+    text-align: right;
+    position: relative;
+    right: 10%;
+    margin: 30px;
+}
+.form_container input[type="text"] {
+    width: 600px;
+    text-align: right;
+    flex: 1;
+}
+p {
+    color: #696cff;
+}
+label[for="id_question"], label[for="id_office"], label[for="id_position"], label[for="id_num"], label[for="id_experience"], label[for="id_experience2"], label[for="id_experience3"] {
+    padding: 8px 15px 7px 0px;
+    text-align: right;
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    font-weight: 200;
+}
+#id_question, #id_office, #id_position, #id_num, #id_experience, #id_experience2, #id_experience3{
+    height: 35px;
+    width: 70%;
+    padding: 1px 10px;
+    font-size: 14px;
+    outline: none;
+    text-align: left;
+}
+::placeholder {
+    font-size: 12px; /* 원하는 글자 크기로 설정 */
+}
+.toggle-button{
+    width: 25%;
+    height: 40px;
+    font-family: "PretendardVariable.woff2";
+    font-weight: 400;
+    background: #FFFFFF;
+    border: 1px solid #CCD3DF;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.button {
+    width: 20%;
+    height: 45px;
+    font-family: "PretendardVariable.woff2";
+    font-size: 17px;
+    font-weight: 400;
+}
+.select input[type=radio]{
+    display: none;
+}
+.select input[type=radio]+label{
+    display: inline-block;
+    cursor: pointer;
+    height: 35px;
+    width: 130px;
+    border: 1px solid #333;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 200;
+    font-size: 15px;
+}
+.select input[type=radio]+label{
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-weight: 200;
+}
+.select input[type=radio]:checked+label{
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+.radio-btn {
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.1rem, 1.5vw, 0.9rem);
+}
+.icon{
+    vertical-align: middle;
+    height: 17px;
+    width: 17px;
+}

@@ -1,0 +1,244 @@
+/* nav 바 */
+html {
+    scroll-behavior: smooth;
+    background: #eff6ff;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+body {
+    margin: 0;
+    background: #eff6ff;
+}
+.scroll-moveBox.flex.scroll-moveBox.flex.flex-br-c {
+    width: 120px;
+    position: fixed;
+    top: 50%;
+    right: 1%;
+    transform: translateY(-50%);
+}
+a {
+    text-decoration-line: none;
+    color: rgb(62, 62, 62);
+    font-size: 100%;
+}
+.no_dot {
+    list-style-type: none;
+    margin-top: 20%;
+}
+.nav {
+    text-align: end;
+    margin-right: 5%;
+    line-height: 2;
+}
+.logo {
+    width: 80px;
+    position: fixed;
+    top: 5%;
+    right: 0.5%;
+}
+/* div */
+h1 {
+    margin: 0;
+    font-family: 'Pretendard';
+    font-weight: 800;
+    font-style: normal;
+}
+.service_sm, .grammar_sm, .manage_sm, .draft_sm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 0 0 10%;
+}
+.aboutus_sm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.subscribe_sm{
+    height: 100%;
+}
+/* 서비스 소개 */
+
+/* 자소서 교정 */
+.grammar_text {
+    font-size: clamp(0.6rem, 1vw, 1rem);
+}
+.grammar_img {
+    width: 65%;
+    border-radius: 10px;
+}
+/* 자소서 관리 */
+.manage_text {
+    font-size: clamp(0.6rem, 1vw, 1rem);
+}
+.manage_img {
+    width: 65%;
+    border-radius: 10px;
+}
+
+/* 자소서 초안 */
+.draft_img {
+    width: 65%;
+    border-radius: 10px;
+}
+.draft_text {
+    font-size: clamp(0.6rem, 1vw, 1rem);
+}
+/* 구독서비스 */
+form {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+/* 무료영역 */
+.free {
+    width: 25%;
+    min-width: 200px;
+    height: 70%;
+    border-radius: 50px;
+    border: 1px solid var(--line_color);
+    background-color: white;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font-size: 17px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.free:hover {
+    width: 28%;
+    height: 75%;
+    transition: 1s;
+    box-shadow: 0px 0px 6px rgba(105, 108, 255, 1), 0px 0px 20px rgba(136, 200, 255, 1);
+}
+
+.free:hover>#button {
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105, 108, 255, 1) 0%, rgba(136, 200, 255, 1) 100%);
+    border: none;
+    color: white;
+    transition: 1s;
+}
+
+/* 유료영역 */
+.pay {
+    width: 25%;
+    min-width: 200px;
+    height: 70%;
+    border-radius: 50px;
+    border: 1px solid var(--line_color);
+    background-color: white;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font-size: 17px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.pay:hover {
+    width: 28%;
+    height: 75%;
+    transition: 1s;
+    box-shadow: 0px 0px 6px rgba(105, 108, 255, 1), 0px 0px 20px rgba(136, 200, 255, 1);
+}
+
+.pay:hover>#button {
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105, 108, 255, 1) 0%, rgba(136, 200, 255, 1) 100%);
+    border: none;
+    color: white;
+    transition: 1s;
+}
+
+/* 페이지 제목 */
+.title {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: bold;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+/* 구독버튼 */
+button {
+    width: 40%;
+    height: 7%;
+    font-size: clamp(0.8rem, 1.4vw, 1.1rem);
+    font-family: "PretendardVariable.woff2";
+}
+
+/* 서비스내용 */
+.content {
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+p {
+    font-size: clamp(0.8rem, 1.4vw, 1.1rem);
+}
+
+/* aboutus */
+.parent {
+    display: flex;
+    width: 45%;
+    margin: 0 !important;
+}
+
+#moon,
+#an {
+    flex: 1;
+    width: 45%;
+    min-width: 250px;
+    cursor: pointer;
+}
+
+#jun,
+#hyun {
+    flex: 2;
+    width: 45%;
+    min-width: 250px;
+    cursor: pointer;
+}
+
+#bean,
+#wool {
+    flex: 3;
+    width: 45%;
+    min-width: 250px;
+    cursor: pointer;
+}
+
+/* font */
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: local('Pretendard Variable'), url('../font/PretendardVariable.woff2') format('woff2-variations');
+}
+
+h3 {
+    font-family: 'Pretendard';
+    font-weight: 500;
+}
+
+p {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    letter-spacing: 1px;
+    line-height: 1.9;
+    font-size: clamp(0.7rem, 1vw, 1rem);
+}

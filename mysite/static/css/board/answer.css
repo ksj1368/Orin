@@ -1,0 +1,51 @@
+/* 답변페이지 */
+h1.titlename {
+    margin-left: 0px !important;
+    font-size: clamp(0.5rem, 1.5vw, 0.9rem);
+}
+.titlenameinquestionmodal {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    left: 3% !important;
+    margin-bottom: 1.5%;
+}
+textarea {
+    width: 90%;
+    height: 40%;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+    resize: none;
+    margin: 0 5%;
+}
+button {
+    width: 20%;
+    height: 45px;
+}
+.answer_question {
+    width: 90%;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    margin: 0 5%;
+}
+.postnamediv, .userdiv, .contentsdiv, .categorydiv, .contentsdiv, .datediv {
+    text-align: center;
+    margin: 0 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+#postnamelabel, #userlabel, #contentslabel, #categorylabel, #contentslabel, #datelabel {
+    margin-right: 5%;
+}
+img {
+    margin: 2% 5% ;
+}
+.btnarea {
+    text-align: center;
+    vertical-align: middle;
+    margin: 0 5%;
+}

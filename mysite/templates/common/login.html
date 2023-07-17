@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/common/login.css'%}">
+  <link rel="stylesheet" href="{% static 'css/main.css'%}">
+  <title>로그인</title>
+</head>
+
+<form method="POST" action="." novalidate>
+  {% csrf_token %}
+  <!-- 로그인 -->
+  <div class="login">
+    <p class="title">로그인</p>
+
+    <!-- 아이디 입력 -->
+    <div class="id">
+      <label name="label_user_id" for="{{ form.user_id.id_for_label }}" class="label_user_id"> {{ form.user_id.label }} </label>
+      {{ form.user_id|add_class:"text_user_id" }}
+      <script type="text/javascript">
+        if (document.getElementsByName("user_id")[0].value != "") {
+          document.getElementsByName("label_user_id")[0].setAttribute("class", "active");
+        }
+      </script>
+      {% if form.user_id.errors %}
+      <script type="text/javascript">
+        document.getElementsByName("user_id")[0].setAttribute("class", "form-control is-invalid");
+        document.getElementsByName("user_id")[0].classList.add("id_invalid");
+      </script>
+      {% for error in form.user_id.errors %}
+      <div class="id_invalid_feedback">{{ error }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <!-- 비밀번호 입력 -->
+    <div class="password">
+      <label for="{{ form.password.id_for_label }}" class="label_password"><i class="fas fa-lock"></i> {{ form.password.label }} </label>
+      {{ form.password|add_class:"text_password" }} 
+      {% if form.password.errors %}
+      <script type="text/javascript">
+        document.getElementsByName("password")[0].setAttribute("class", "form-control is-invalid");
+        document.getElementsByName("password")[0].classList.add("password_invalid");
+      </script>
+      {% for error in form.password.errors %}
+      <div class="password_invalid_feedback">{{ error }}</div>
+      {% endfor %} {% endif %}
+    </div>
+
+    <label class="login_keep">
+      <input type="checkbox" name="remember_session" />
+      <span>로그인 상태 유지</span>
+    </label>
+    <br />
+
+    <!-- 찾기, 회원가입 -->
+    <div class="login_find">
+      <a href="{% url 'common:recovery_id' %}" class="login_menu">아이디 찾기</a>
+      <a href="{% url 'common:recovery_pw' %}" class="login_menu">비밀번호 찾기</a>
+      <a href="{% url 'common:register' %}" class="login_menu">회원가입</a>
+    </div>
+
+    <!-- 로그인 버튼 -->
+    <div class="login_button">
+      <div><button type="submit" class="site_login">로그인</button></div>
+      <div class="google_login">
+        <img src="../../static/img/google.png" alt="googlelogo" id="google_logo">
+        <a href="{% url 'common:google_login' %}" id="google_login">구글로 로그인</a>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}

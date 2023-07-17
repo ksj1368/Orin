@@ -1,0 +1,136 @@
+body {
+    /* 페이지로드시 Fade In 효과주는 것 */
+    animation: fadein 0.5s;
+    -moz-animation: fadein 0.5s;
+    -webkit-animation: fadein 0.5s;
+    -o-animation: fadein 0.5s;
+}
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-moz-keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-webkit-keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+@-o-keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@font-face {
+    font-family: "PretendardVariable.woff2";
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+/* 배경 */
+body {
+    margin: 0px;
+    background: white;
+    font-family: "PretendardVariable.woff2";
+    width: 100vw;
+    height: 100vh;
+    min-width: 100%;
+    min-height: 100%;
+    position: relative;
+}
+/* 메뉴바 */
+#menu_icon {
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    position: relative;
+    left: 4%;
+    top: 5%;
+    z-index: 10;
+}
+#menu_box {
+    height: 0;
+    width: 300px;
+    overflow: hidden;
+    position: absolute;
+    top: calc(5% + 30px);
+    left: calc(4% - 18px);
+    opacity: 0;
+    z-index: 10;
+}
+#toggle:checked ~ #menu_box {
+    height: 520px;
+    opacity: 1;
+    transition: 1.1s all;
+}
+
+#menu {
+    width: 160px;
+    height: 280px;
+    background-color: white;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    list-style: none;
+    padding-left: 0px;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 0px;
+}
+
+#menu::after {
+    border-top: 0px solid transparent; 
+    border-left: 10px solid transparent; 
+    border-right: 10px solid transparent; 
+    border-bottom: 10px solid white;
+    content: ""; 
+    position: absolute;
+    top: -9px;
+    left: 10%;
+}
+
+.menu_name {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+.menu_name:hover {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.25);
+}
+#hr_menu {
+    width: 80% !important;
+    border: 1px solid rgb(207, 205, 205, 0.5);
+    margin: 0px;
+    background: rgb(207, 205, 205, 0.5);
+    height: 0px;
+}
+/* Orin 로고 */
+#logo {
+    width: 6%;
+    min-width: 70px;
+    height: auto;
+    position: absolute;
+    right: 4%;
+    top: 5%;
+    z-index: 10;
+}

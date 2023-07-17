@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<head>
+    <title>구독페이지</title>
+    <link rel="stylesheet" href="{% static 'css/common/subscribe.css'%}">
+    <script>
+        function confirmSubscription() {
+            if (confirm("정말 구독하시겠습니까?")) {
+                document.getElementById("subscribe-form").submit();
+            } else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<form id="subscribe-form" method="POST">
+    {% csrf_token %}
+
+    <!-- 구독하기 -->
+    <input type="hidden" name="user_id" value="{{ request.user.user_id }}">
+        
+    <!-- 무료 -->
+    <div class="free" onclick="return false;">
+        <p class="title">Basic</p>
+        <button id="button">free</button>
+        <div class="content">
+            <p>✅ 자소서 문맥 교정 서비스</p>
+            <p>✅ 자소서 소제목 AI 생성 서비스</p>
+            <p>❌ 북마크 임시 저장 2개</p>
+            <p>❌ 자소서 저장 용량 무제한</p>
+            <p>❌ chatGPT로 자소서 초안 작성</p>
+        </div>
+    </div>
+    <!-- 유료 -->
+    <div class="pay" onclick="confirmSubscription()">
+        <p class="title">Pro</p>
+        <button type="button" id="button">3,900원/월</button>
+        <div class="content">
+            <p>✅ 자소서 문맥 교정 서비스</p>
+            <p>✅ 자소서 소제목 AI 생성 서비스</p>
+            <p>✅ 북마크 임시 저장 6개</p>
+            <p>✅ 자소서 저장 용량 무제한</p>
+            <p>✅ chatGPT로 자소서 초안 작성</p>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,579 @@
+/* 전체 영역 */
+body {
+    overflow-x: hidden;
+}
+/* 주요 기능 영역 */
+form {
+    width: 80%;
+    height: 60%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+}
+/* 왼쪽 영역 */
+#before {
+    width: 47%;
+}
+/* 왼쪽 head */
+#head_left {
+    display: flex;
+    /* align-items: center; */
+    justify-content: flex-end;
+    font-weight: bold;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    position: relative;
+}
+#head_left label {
+    cursor: pointer;
+}
+#head_left button {
+    font: var(--font);
+    /* padding: 5px 5px; */
+}
+#head_left button:hover {
+    border: 1px solid var(--point_color);
+}
+.loading-icon{
+    display: none;
+    font-size: 25px;
+    position: absolute;
+    right: -22px;
+}
+/* 왼쪽 자소서 영역 */
+#content_left {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+#jasoseo {
+    resize: none;
+    outline: none;
+    width: calc(100% - 60px);
+    height: calc(100% - 70px);
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding: 60px 30px 10px 30px;
+    background-color: white;
+    border: 1px solid var(--line_color);
+    border-radius: 20px;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+}
+#jasoseo::-webkit-scrollbar {
+    display: none;
+}
+/* 왼쪽 hidden textarea */
+#hidden_textarea_left {
+    height: 0px;
+    width: calc(100% - 60px);
+    margin-top: 7px;
+    padding: 60px 30px 10px 30px;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+}
+#hidden_textarea_left::-webkit-scrollbar {
+    display: none;
+}
+/* 오른쪽 hidden textarea */
+#hidden_textarea_right {
+    height: 0px;
+    width: calc(100% - 60px);
+    margin-top: 7px;
+    padding: 60px 30px 10px 30px;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+}
+#hidden_textarea_right::-webkit-scrollbar {
+    display: none;
+}
+/* 코칭용 fake div */
+.coach_left {
+    width: 100%;
+    margin-top: 7px;
+    position: absolute;
+    top: 0px;
+    z-index: -20;
+}
+#fake_left {
+    width: 100%;
+    height: 100%;
+}
+.coaching_list {
+    display: none;
+    width: 100%;
+    border: 1px solid var(--line_color);
+    box-shadow: 0px 0px 7px var(--line_color);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 0px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+}
+.coaching_list > p {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: bold;
+}
+#good_icon {
+    color: blue;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+#bad_icon {
+    color: red;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+/* 왼쪽 클립보드 복사 */
+#icon_copy_left {
+    cursor: pointer;
+    position: absolute;
+    right: 70px;
+    top: 22px;
+    /* font-size: clamp(1.2rem, 2vw, 2rem); */
+    font-size: 20px;
+}
+#alarm_copy_left {
+    position: absolute;
+    right: 57.5px;
+    top: 44.5px;
+    font-size: 13px;
+    font-weight: bold;
+    /* background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%); */
+    background: var(--line_color);
+}
+/* 왼쪽 텍스트 초기화 */
+#icon_reset_left {
+    cursor: pointer;
+    position: absolute;
+    right: 30px;
+    top: 20.5px;
+    font-size: 25px;
+}
+/* 왼쪽 글자수 */
+#counter {
+    float: right;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    font-weight: bold;
+    margin-right: 10px;
+}
+/* 에러 영역 */
+.error_box {
+    position: absolute;
+    right: 0px;
+    top: -30px;
+    display: flex;
+    font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+    color: var(--point_color);
+}
+/* 왼쪽 옵션 에러 */
+#option-error {
+    visibility: hidden;
+    opacity: 0;
+    text-align: center;
+    border: 1px solid var(--point_color);
+    padding: 5px;
+    transition: 0.3s ease-out;
+}
+/* 자소서 에러 */
+#jasoseo-error {
+    visibility: hidden;
+    opacity: 0;
+    text-align: center;
+    border: 1px solid var(--point_color);
+    padding: 5px;
+    transition: 0.3s ease-out;
+}
+/* 옵션 에러만 발생했을 때 */
+#only-option-error {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 0px;
+    top: -30px;
+    text-align: center;
+    font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+    color: var(--point_color);
+    border: 1px solid var(--point_color);
+    padding: 5px;
+    transition: 0.3s ease-out;
+}
+/* 문단별 소제목 알림 */
+#mini-title-comment {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    right: 0px;
+    top: -30px;
+    text-align: center;
+    font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+    color: red;
+    border: 1px solid red;
+    padding: 5px;
+    transition: 0.3s ease-out;
+}
+/* 비어있는 영역 */
+#empty {
+    flex-grow: 1;
+}
+/* 오른쪽 영역 */
+#after {
+    width: 47%;
+}
+/* 오른쪽 버튼 영역 */
+#head_right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-weight: bold;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+}
+#head_right > button {
+    font: var(--font);
+    padding: 5px 10px;
+}
+/* 오른쪽 자소서 영역 */
+#content_right {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+/* 뷰모드 */
+#myTextView {
+    resize: none;
+    outline: none;
+    width: calc(100% - 60px);
+    /* height: calc(100% - 70px); */
+    margin-top: 7px;
+    margin-bottom: 11px;
+    padding: 60px 30px 10px 30px;
+    background-color: white;
+    border: 1px solid var(--line_color);
+    border-radius: 20px;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+}
+#myTextView em{
+    color:red;
+}
+#myTextView::-webkit-scrollbar {
+    display: none;
+}
+/* 편집모드 */
+#myText {
+    display: none;
+    resize: none;
+    outline: none;
+    width: calc(100% - 60px);
+    /* height: calc(100% - 70px); */
+    margin-top: 7px;
+    margin-bottom: 7px;
+    padding: 60px 30px 10px 30px;
+    background-color: white;
+    border: 1px solid var(--line_color);
+    border-radius: 20px;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    letter-spacing: 1px;
+    line-height: 150%;
+}
+#myText::-webkit-scrollbar {
+    display: none;
+}
+/* 도움말 박스(아이콘) */
+#right-icons {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    width: 160px;
+    height: 30px;
+}
+/* 오른쪽 클립보드 복사 */
+#icon_copy_right {
+    cursor: pointer;
+    position: absolute;
+    right: 150px;
+    top: 15px;
+    /* font-size: clamp(1.2rem, 2vw, 2rem); */
+    font-size: 20px;
+}
+#alarm_copy_right {
+    position: absolute;
+    right: 137.5px;
+    top: 37.5px;
+    font-size: 13px;
+    font-weight: bold;
+    /* background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%); */
+    background: var(--line_color);
+}
+/* docs 다운로드 버튼 */
+#downloadButton {
+    cursor: pointer;
+    position: absolute;
+    right: 110px;
+    top: 13px;
+    font-size: 22px;
+}
+/* 마이페이지 저장 */
+#saveButton {
+    cursor: pointer;
+    position: absolute;
+    right: 70px;
+    top: 15px;
+    font-size: 20px;
+}
+/* 북마크 추가버튼 */
+#commitButton {
+    cursor: pointer;
+    position: absolute;
+    right: 30px;
+    top: 15px;
+    font-size: 20px;
+}
+/* 북마크 */
+#commits {
+    position: absolute;
+    right: -92px;
+    top: 15px;
+    z-index: -5;
+}
+.bookmarkContainer {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    margin-bottom: 10px;
+}
+.bookmarkIcon {
+    cursor: pointer;
+    transform: rotate(-90deg);
+    font-size: 42px;
+    filter: drop-shadow(-1.2px 1.2px 1.5px lightgray) brightness(1.05);
+}
+.bookmarkIcon.active {
+    filter: drop-shadow(-1.2px 1.2px 1.5px lightgray) saturate(200%) brightness(0.98);
+    transform: rotate(-90deg) scaleY(1.15) translateY(12px);
+}
+.delete_container #icon_delete {
+    visibility: hidden;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 20px;
+    color: rgb(0, 0, 0, 0.8);
+    transition: 0.2s ease-out;
+}
+.delete_container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+}
+.delete_container #icon_delete:hover {
+    color: red;
+}
+.bookmarkContainer .markedAt {
+    visibility: hidden;
+    opacity: 0;
+    font-size: 10px;
+    color: rgb(0, 0, 0, 0.4);
+    margin-left: 2px;
+    position: relative;
+    top: -2px;
+    transition: 0.2s ease-out;
+}
+/* 오른쪽 글자수 */
+#counter2 {
+    float: right;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    font-weight: bold;
+    margin-right: 10px;
+}
+/* 맨 아래로 이동 버튼 */
+#scroll-bottom {
+    position: fixed;
+    width: 8%;
+    height: 7%;
+    right: 0px;
+    bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#icon_bottom {
+    padding: 10%;
+    border: 2px solid var(--point_color);
+    border-radius: 50%;
+    font-size: 25px;
+    color: var(--point_color);
+    cursor: pointer;
+    position: relative;
+    right: 2px;
+}
+#icon_bottom:hover {
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    color: white;
+    border: 2px solid var(--point_color);
+    transition: 1s;
+} 
+/* 맨 위로 이동 버튼 */
+#scroll-top {
+    position: fixed;
+    width: 8%;
+    height: 7%;
+    right: 0px;
+    bottom: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#icon_top {
+    padding: 10%;
+    border: 2px solid var(--point_color);
+    border-radius: 50%;
+    font-size: 25px;
+    color: var(--point_color);
+    cursor: pointer;
+    position: relative;
+    right: 2px;
+}
+#icon_top:hover {
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    color: white;
+    border: 2px solid var(--point_color);
+    transition: 1s;
+}
+/* 뷰모드 버튼 */
+#view-button-area {
+    position: fixed;
+    width: 8%;
+    height: 7%;
+    right: 0px;
+    bottom: 132px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#view-button-area > span {
+    position: absolute;
+    top: -8px;
+    font-size: 12px;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s ease-out;
+    letter-spacing: 1px;
+}
+#icon-view-area {
+    display: inline-block;
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+}
+#icon_view{
+    padding: 10%;
+    border: 2px solid var(--point_color);
+    border-radius: 50%;
+    font-size: 25px;
+    color: var(--point_color);
+    cursor: pointer;
+    position: relative;
+    right: 2px;
+    width: 25px;
+    height: 25px;
+}
+#icon_view:hover {
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    color: white;
+    border: 2px solid var(--point_color);
+    transition: 1s;
+}
+/* 유의어 버튼 영역 */
+#syn-button-area {
+    position: fixed;
+    width: 8%;
+    height: 9%;
+    right: 0px;
+    bottom: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#syn-icon-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+#syn-button-area span {
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+#synonymButton {
+    border: none;
+    background: none;
+}
+#synonymButton:hover {
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+#img_syn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+#img_syn:hover {
+    border-radius: 50%;
+    background-color: rgba(205, 205, 205, 0.5);
+    transition: 0.3s ease-out;
+}
+/* 유의어 추천 영역 */
+#synonyms {
+    position: absolute;
+    width: 300%;
+    right: 50%;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s ease-out;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-weight: bold;
+    border: 1px solid var(--line_color);
+    border-radius: 20px;
+    box-shadow: 0px 0px 7px var(--line_color);
+    background-color: white;
+    padding: 15px;
+}
+.synonym-button {
+    font: var(--font);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-weight: bold;
+}
+/*유의어 복사하면 copied 출력하는 span */
+.syn-copied{
+    margin-left : 5px;
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    margin-left : 10px;
+}

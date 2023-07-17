@@ -1,0 +1,113 @@
+/* 모달 스타일링 */
+.modal, #modal, #myModal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;   
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content-add-j {
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    margin: 5% auto;
+    width: 75%;
+    height: 80%;
+}
+.modal-content-container {
+    overflow-y: auto;
+    max-height: 80vh; /* 모달 창의 최대 높이 설정 */
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.close:hover {
+    background-color: white !important;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+body.modal-open {
+    overflow: hidden;
+}
+p.create_jasoseo_modal {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    top: 2% !important;
+    left: 5% !important;
+}
+hr {
+    background: var(--point_color);
+    height:1px;
+    border:0;
+    width: 95%;
+    margin: auto;
+}
+.category, .title, .content {
+    text-align: center;
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+label[for='categorySelect'], label[for='title'], label[for='content'] {
+    color: var(--point_color);
+    font-size: 18px;
+    font-weight: 200;
+    width: 14%;
+    text-align:  left;
+}
+#categorySelect {
+    width: 82%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    outline: none;
+}
+input#title {
+    width: 80% !important;
+    height: 35px;
+    padding: 1px 10px;
+    font-family: var(--font);
+    letter-spacing: 1.5px;
+}
+textarea {
+    width: 80% !important;
+    height: 40vh !important;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+    resize: none;
+    padding: 1px 10px;
+}
+.submitbutton {
+    text-align: center;
+}
+#submitbutton{
+    width: 20%;
+    height: 35px;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.1rem, 1.5vw, 0.9rem);
+    font-weight: 400;
+}
+#content {
+    width: 90%;
+    letter-spacing: 1.5px;
+    line-height: 190%;
+    min-height: 40vh !important;
+    word-break: keep-all;
+}

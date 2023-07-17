@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+  <link href="{% static 'css/board/answer.css' %}" rel="stylesheet">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  <title>답변 작성 페이지</title>
+</head>
+
+<body>
+  <h1 class="titlename">답변 작성 페이지</h1>
+  <div class="answer_question">
+    <div class="postnamediv">
+      <p id="postnamelabel">제목</p>
+      <p id = "postname">{{question.postname}}</p>
+    </div>
+    <div class="userdiv">
+      <p id="userlabel">작성자</p>
+      <p id = "user">{{question.user}}</p>
+    </div>
+    <div class="categorydiv">
+      <p id="categorylabel">카테고리</p>
+      <p id = "category">{{question.category}}</p>
+    </div>
+      <div class="contentsdiv">
+      <p id="contentslabel">질문 내용</p>
+      <p id = "contents">{{question.contents}}</p>
+    </div>
+      <div class="datediv">
+      <p id="datelabel">작성일자</p>
+      <p id = "created_at">{{question.created_at|date:"Y. m. d. H:i"}}</p>
+        <!-- 이미지-->
+  {% if question.image %}
+      <img src = "{{question.image.url}}" alt='{{ question.image }}' height="300" loading="lazy">
+      <br>
+  {% endif %}
+    </div>
+  </div>
+
+  <form method="POST">
+    {% csrf_token %}
+    <div>
+      <!--답변 내용 작성-->
+      <br>
+      <h1 class="contents">답변 내용</h1><br>
+      <textarea rows="10" cols="50" name="content" id="content"></textarea>
+    </div>
+    <!--제출 버튼-->
+    <div class="btnarea">
+      <button type="submit">제출</button>
+    </div>
+  </form>
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+div.container {
+    width: 80%;
+    margin: 0% 10%;
+}
+.titlename {
+    margin: 10% 0 0 15%;
+}
+hr {
+    background: var(--point_color);
+    height:1px;
+    border:0;
+    margin: 0 !important;
+    width: 98% !important;
+}
+.content-box1 {
+    margin: 2% 2% 1% 6%;
+    letter-spacing : 1px;
+    font-size: 16px;
+}
+.content-container {
+    display: flex;
+}
+
+.gpt-content, .bard-content {
+  flex: 1;
+}
+.content-box p {
+    margin: 0px 0px, 0px, 2%;
+    line-height: 1.8;
+} 
+.gpt-content, .bard-content {
+    border: 1px solid var(--point_color);
+    border-radius: 10px;
+    margin: 2% 5% 2% 4%;
+}
+.content-box2, .content-box3 {
+    margin: 2% 5%;
+    letter-spacing: 2.1px;
+    line-height: 160%;
+}
+button.tomainservice, .button {
+    width: 40%;
+    height: 40px;
+    text-align: center;
+}
+button.saveButton {
+    width: 40%;
+    height: 40px;
+    text-align: center;
+}
+.button {
+    width: 25%;
+    height: 40px;
+    margin-bottom: 2%;
+    text-align: center;
+}
+.gptlogo, .bardlogo {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+}
+.return, .link-container{
+    text-align: center;
+    margin-top: 3%;
+}
+#textToCopy_chat, #textToCopy_bard, .draftp {
+    font-size: 16px !important;
+}

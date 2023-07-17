@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/common/register_success.css'%}">
+</head>
+<body style="height: 100vh;">
+    <div class="centered">
+        <div class="content-box">
+            <div>
+                <div class="card" style="display: block; text-align: center; margin: auto;">
+                    <div class="card-body">
+                        <h4 style="font-weight: bold; margin-bottom: 20px;">인증을 위한 메일이 발송되었습니다.</h4>
+                            <p>입력하신 메일을 확인해주세요.<br>인증을 하지 않으시면 로그인이 되지 않습니다.</p>
+                            <br>
+                    </div>
+                    <div>
+                        <button onclick="location.href='/'"
+                            class="btn btn-red">메인으로</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

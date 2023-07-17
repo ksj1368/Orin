@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<body>
+    <div>
+        <h2 style="display: block; text-align: center;">Orin 회원가입 메일입니다</h2>
+        <p style="display: block; text-align: center;">아래의 버튼을 눌러 인증하기 절차를 마쳐주세요.</p>
+        <a href="http://{{ domain }}{% url 'common:activate' uid64=uid token=token %}" style="display: block; text-align: center;">인증하기</a>
+    </div>           
+</body>
+</html>

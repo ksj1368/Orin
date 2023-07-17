@@ -1,0 +1,907 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/correction/save.css'%}">
+    <link rel='stylesheet' href="{% static 'css/correction/correct_result.css' %}">
+    <link rel='stylesheet' href="{% static 'css/correction/tutorial.css' %}">
+
+    <script src="https://kit.fontawesome.com/d86de0fb4d.js" crossorigin="anonymous"></script> 
+    <title>교정서비스</title>
+</head>
+
+{% if error_message %}
+<script>
+    alert("{{error_message}}")
+</script>
+{% endif %}
+
+<div id = "help-area">
+    <input type="button" id="tutorial" hidden>
+    <label for="tutorial" onclick>
+        <i class="fa-regular fa-circle-question" id = 'help'></i>
+        <span id="guide-text">이용 가이드</span>
+    </label>
+</div>
+
+
+
+<!-- 주요 영역 -->
+<form id = "correctionForm" action = "{% url 'correction:correct' %}" method = 'post'>
+    {% csrf_token %}
+
+    <!-- 왼쪽 영역 -->
+    <div id="before">
+        <div id="head_left">
+            <div id = 'option-area'>
+                <input type="checkbox" id="option1" name="option1" value="correct_grammar">
+                <label for="option1">문법 교정</label> &nbsp;&nbsp;&nbsp;
+                <input type="checkbox" id="option2" name="option2" value="create_subtitle">
+                <label for="option2">소제목 추천</label> &nbsp;&nbsp;&nbsp;
+                <button type = "submit" id = "correctButton" name = "action" value = "correction">교정하기</button>
+            </div>
+            <span class = "loading-icon">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-xs"></i>
+            </span>
+            <div class="error_box">
+                <div id = "option-error">옵션을 한 개 이상 선택해주세요.</div> &nbsp;&nbsp;&nbsp;
+                <div id = "jasoseo-error"> 내용을 한 글자 이상 입력해주세요.</div>
+            </div>
+            <div id = "only-option-error">옵션을 한 개 이상 선택해주세요.</div>
+            <div id = "mini-title-comment">구간별 소제목을 추천받고 싶다면, 슬래시 두 개(//)로 구분해주세요.</div>
+        </div>
+        <div id="content_left">
+            <!-- 클립보드 복사 -->
+            <input type="button" id="copy_left" hidden>
+            <label for="copy_left" onclick>
+                <ion-icon name="copy-outline" id="icon_copy_left" data-clipboard-target="#jasoseo"></ion-icon>
+            </label>
+            <div id="alarm_copy_left"></div>
+            <!-- 초기화 -->
+            <input type="button" id="reset_left" hidden>
+            <label for="reset_left" onclick>
+                <ion-icon name="close-outline" id="icon_reset_left"></ion-icon>
+            </label>
+            <!-- 자소서 -->
+            <textarea id = "jasoseo" name = "jasoseo">{{jasoseo}}</textarea>
+            <!-- 왼쪽 hidden textrea -->
+            <textarea id="hidden_textarea_left" rows='1'></textarea>
+            <!-- 오른쪽 hidden textarea -->
+            <textarea id="hidden_textarea_right" rows='1'></textarea>
+            <!-- 왼쪽 글자수 -->
+            <span id = "counter"></span>
+            <div class="coach_left">
+                <!-- 코칭용 fake div -->
+                <div id="fake_left"></div>
+                <!-- 자소서코칭 결과 영역 --> 
+                <ul class = "coaching_list"></ul>
+                <!-- 코칭 아래 여백 -->
+                <div id="bottom_space"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 중간 영역 -->
+    <div id="empty"></div>
+
+    <!-- 오른쪽 영역 -->
+    <div id="after">
+        <div id="head_right">
+            <button type="button" id="coachButton" name="action" value="coach">자기소개서 코칭</button>
+            <span class="loading-icon" style = 'display : none' >
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-xs"></i>
+            </span>
+        </div>
+        <div id="content_right">
+            <!-- 도움말 박스(아이콘) -->
+            <div id = "right-icons"></div>
+            <!-- 클립보드 복사 -->
+            <input type="button" id="copy_right" hidden>
+            <label for="copy_right" onclick>
+                <ion-icon name="copy-outline" id="icon_copy_right" data-clipboard-target="#myText"></ion-icon>
+            </label>
+            <div id="alarm_copy_right"></div>
+            <!-- docs 다운로드 -->
+            <input type="button" id="download" hidden>
+            <label for="download" onclick>
+                <ion-icon name="download-outline" id="downloadButton"></ion-icon>
+            </label>
+            <!-- mypage 저장 -->
+            <input type="button" id="save" hidden>
+            <label for="save" onclick>
+                <ion-icon name="save-outline" id="saveButton"></ion-icon>
+            </label>
+            <!-- 북마크 추가 -->
+            <input type="button" id="commit" hidden>
+            <label for="commit" onclick>
+                <ion-icon name="bookmark-outline" id="commitButton"></ion-icon>
+            </label>
+            <!-- 북마크 -->
+            <div id="commits"></div>
+            <!-- 뷰모드 -->
+            <div id="myTextView">{{corrected_content|safe}}</div>
+            <!-- 편집모드 -->
+            <textarea id = "myText" name = "corrected_content"></textarea>
+            <!-- 오른쪽 글자수 -->
+            <div id = "counter2"></div>
+        </div>
+    </div>
+
+</form>
+
+<!-- 서비스 부가 기능 -->
+<!-- 맨 위로 이동 -->
+<div id="scroll-top">
+    <input type="button" id="top" hidden>
+    <label for="top" onclick>
+        <ion-icon name="arrow-up-sharp" id="icon_top"></ion-icon>
+    </label>
+</div>
+<!-- 맨 아래로 이동 -->
+<div id="scroll-bottom">
+    <input type="button" id="bottom" hidden>
+    <label for="bottom" onclick>
+        <ion-icon name="arrow-down-sharp" id="icon_bottom"></ion-icon>
+    </label>
+</div>
+<!-- 뷰모드 버튼 -->
+<div id="view-button-area">
+    <span>편집모드</span>
+    <input type="checkbox" id="view_button" hidden>
+    <label for="view_button" id="label_view" onclick>
+        <ion-icon name="brush" id="icon_view"></ion-icon>
+    </label>
+</div>
+<!-- 유의어 버튼 (id = synonymButton) 영역 -->
+<div id = "syn-button-area">
+    <!-- 유의어 추천 영역 -->
+    <div id = "syn-icon-area">
+        <span id = "syn_ment" style = "display:none">추천 유의어</span>
+        <button id = "synonymButton" style = "display:none">
+            <img src='{% static 'img/lightbulb.png' %}' id='img_syn'/>
+        </button>
+    </div>
+    <div id = "synonyms"></div>
+</div>
+
+<!--마이페이지에 자소서 저장하기 모달창-->
+<div id="modal" class = "modal">
+    <div id="modal_content">
+        <p>자기소개서 저장</p>
+        <div id="inputs">
+            <label for="fname">제목</label> &nbsp;&nbsp;
+            <input type = "text" id = 'titleInput' name = "title" maxlength = '45'> &nbsp;
+        </div>
+        <div id="category">
+            <label for="cname">카테고리</label> &nbsp;&nbsp;
+            <select name = 'categoryInput' id = 'categoryInput'></select> &nbsp;
+            <input type="button" id="add_category" hidden>
+            <label for="add_category" onclick>
+                <ion-icon name="add-circle-outline" id="addCategoryButton"></ion-icon>
+            </label>
+        </div>
+        <div id="check">
+            <button type="button" id="save_okBtn">확인</button> &nbsp;&nbsp;&nbsp;
+            <button type="button" id="save_closeBtn">취소</button>
+        </div>
+    </div>
+</div>
+
+
+<!--이용가이드 모달창-->
+<div id="tutorialModal" >
+    <div class="modal-content">
+        <div class = "modal-header">
+            <input type = "button" id = "close-tutorialModal" hidden>
+            <label for = "close-tutorialModal" onclick>
+                <ion-icon name="close-outline" id = "icon_tutorial_close"></ion-icon>
+            </label>
+            <button type = "button" id="next-step">다음</button>
+        </div>
+        <div class="modal-body">
+            <div class="description">
+                <div id="desc1">
+                    <h2>문법 교정, 소제목 추천</h2>
+                    <p class = "desc">✔ 맞춤법을 고쳐주고, 소제목을 추천해줍니다.</p>
+                    <p class = "desc">✔ 구간별 소제목을 원한다면, <strong style = "color : red;">//</strong>로 구분하여 <br> 구간별 소제목을 추천받을 수 있습니다.</p>
+                </div>
+                <div id="desc2" style="display: none;">
+                    <h2>뷰모드, 편집모드</h2>
+                    <p class = "desc">뷰모드에서 교정결과를 확인하고,<br> 편집모드에서 자유롭게 수정할 수 있습니다. </p>
+                    <div class = "desc_details1">
+                        <span><ion-icon name="brush"></ion-icon> : 클릭시 편집모드로 전환</span><br>
+                        <span><ion-icon name="eye"></ion-icon> : 클릭시 뷰모드로 전환</span>
+                    </div>
+                </div>
+                <div id="desc3" style="display: none;">
+                    <h2>유의어 추천</h2>
+                    <p class = "desc">텍스트를 드래그하면 <img src='{% static 'img/lightbulb.png' %}'width = "25px"/> 아이콘이 나타납니다.<br>
+                        아이콘을 클릭하면 유의어를 확인하고, 복사할 수 있습니다.</p>
+                </div>
+                <div id="desc4" style="display: none;">
+                    <h2>편집 아이콘</h2>
+                    <p class = "desc" style="margin-bottom:7px">자기소개서 수정을 위한 편의기능을 아이콘으로 제공합니다.</p>
+                    <div class = "desc_details2">
+                        <span><ion-icon name="copy-outline"></ion-icon>: 클립보드에 복사</span><br>
+                        <span><ion-icon name="download-outline"></ion-icon>: .docx파일로 다운로드</span><br>
+                        <span><ion-icon name="save-outline"></ion-icon>: 자소서 보관함에 저장</span><br>
+                        <span><ion-icon name="bookmark-outline"></ion-icon>: 북마크 임시저장</span>
+                    </div>                  
+                </div>
+                <div id="desc5" style="display: none;">
+                    <h2>자기소개서 코칭</h2>
+                    <p class = "desc">현재 작성중인 자기소개서에 대한<br>아쉬운점, 좋은점을 피드백 해줍니다. </p>
+                </div>
+            </div>
+            <div class="tutorial_bullets">
+                <div class = "bullets">
+                    <span data-index="1" class=""></span>
+                    <span data-index="2" class=""></span>
+                    <span data-index="3" class=""></span>
+                    <span data-index="4" class=""></span>
+                    <span data-index="5" class=""></span>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--이용가이드 시 스포트라이트 효과-->
+<span id="tutorial_spotlight"></span>
+
+
+<script>
+    var csrfToken = "{{ csrf_token }}"; //각 POST 요청에 CSRF 토큰 함께 전송해야 함
+    var myTextView, myText, convertedText; 
+    var isTutorialMode = false;
+    var synbtn, synTitle;
+    $(document).ready(function() {
+        /* 이용가이드 모달창 */
+        isTutorialMode = false;
+        synTitle = $('#syn_ment');
+        synbtn = $('#synonymButton');
+
+        //튜토리얼 모달창 열기
+        $('#tutorial').on('click', function() {
+            $('#tutorialModal').show();
+
+            initTutorial();
+        });
+        
+
+        // x버튼누르면 모달 닫기
+        $('#close-tutorialModal').on('click', function() {
+            closeModal();
+        });
+        
+        handleNextButton();
+        handleBulletClick();
+        
+        $(window).resize(function() {
+            if($('#tutorialModal').is(':visible')) {
+                updateSpotlight();
+            }
+        });
+
+        /* 교정 결과 */
+        myTextView = $('#myTextView');
+        myText = $('#myText');
+        convertedText = myTextView.html();
+        convertedText = htmlEntitiesToText(convertedText);  // HTML 엔티티를 원래의 문자로
+        convertedText = htmlToText(convertedText)    // 태그 변경 및 삭제
+        myText.val(convertedText);
+        
+        $('#correctButton').prop('disabled', false);
+        $('.loading-icon').hide()
+
+        // 왼쪽 textarea 글자 수 세기
+        $('#counter').html($('#jasoseo').val().length + ' / 3000');
+        
+        
+        //오른쪽 textarea 글자 수 세기
+        var corrected_length = convertedText.length; // HTML 태그 제거 후 길이 계산
+        $('#counter2').html(corrected_length + '자');
+        
+        // 텍스트 클릭하면 편집모드
+        var modeStatus = 'editBtn'
+        $('#myTextView').click(function(){
+            $('#myTextView').hide();  //display : none으로 변경
+            $('#myText').show();      //display : block (span은 inline)
+            $('#icon_copy_right').css('top', '22px'); // 뷰모드와 아이콘 위치 맞추기
+            $('#alarm_copy_right').css('top', '44.5px');
+            $('#downloadButton').css('top', '20px');
+            $('#saveButton').css('top', '22px');
+            $('#commitButton').css('top', '22px');
+            $('#commits').css('top', '22px');
+            adjustTextareaHeight_right(); // textarea 길이 조절
+            adjustCoachingDiv(); // 코칭 위치 조절
+            modeStatus = 'viewBtn'; // 뷰모드 버튼으로 변경
+            $('#icon_view').attr('name','eye'); // 뷰모드 아이콘으로 바꾸기
+            $('#view-button-area span').text('뷰모드'); // 호버 텍스트 변경
+
+            // 모든 북마크 제자리
+            $('.bookmarkIcon').removeClass('active');
+            $('.delete_container').css('transform', ''); 
+        });
+
+        // 모드 변경 버튼
+        $('#icon_view').on('click', function() {
+            // 편집모드 -> 뷰모드
+            if (modeStatus == 'viewBtn') {
+                $('#myTextView').show();
+                $('#myText').hide();
+                // 뷰모드 아이콘 위치 맞추기
+                $('#icon_copy_right').css('top', '15px');
+                $('#alarm_copy_right').css('top', '37.5px');
+                $('#downloadButton').css('top', '13px');
+                $('#saveButton').css('top', '15px');
+                $('#commitButton').css('top', '15px');
+                $('#commits').css('top', '15px');
+                adjustCoachingDiv(); // 코칭 위치 조절
+                modeStatus = 'editBtn'; // 편집모드 버튼으로 바꾸기
+                $('#icon_view').attr('name','brush'); // 편집모드 아이콘으로 바꾸기
+                $('#view-button-area span').text('편집모드'); // 호버 텍스트 변경
+            } else { // 뷰모드 -> 편집모드
+                $('#myTextView').hide();
+                $('#myText').show();
+                // 편집모드 아이콘 위치 맞추기
+                $('#icon_copy_right').css('top', '22px');
+                $('#alarm_copy_right').css('top', '44.5px');
+                $('#downloadButton').css('top', '20px');
+                $('#saveButton').css('top', '22px');
+                $('#commitButton').css('top', '22px');
+                $('#commits').css('top', '22px');
+                adjustTextareaHeight_right(); // textarea 길이 조절
+                adjustCoachingDiv(); // 코칭 위치 조절
+                modeStatus = 'viewBtn'; // 뷰모드 버튼으로 바꾸기
+                $('#icon_view').attr('name','eye'); // 뷰모드 아이콘으로 바꾸기
+                $('#view-button-area span').text('뷰모드'); // 호버 텍스트 변경
+            };
+        });
+
+        // 모드변경 버튼 호버
+        $(document).on('mouseover','#icon_view', function(){
+            var modeName = $(this).parent().siblings('span');
+            modeName.css('visibility','visible');
+            modeName.css('opacity','1');
+        });
+        $(document).on('mouseout', '#icon_view', function(){
+            var modeName = $(this).parent().siblings('span');
+            modeName.css('visibility','hidden');
+            modeName.css('opacity','0');
+        })
+
+        /* 유의어 추천 기능 */
+        $(document).click(function(e) {
+            var container = $('#syn-button-area');
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                // 유의어 조회 버튼 외의 영역을 클릭한 경우
+                if (!isTutorialMode) {  // 튜토리얼 모드가 아닌 경우에만 숨김
+                    $('#synonyms').css('visibility', 'hidden');
+                    $('#synonyms').css('opacity', '0');
+                    synbtn.hide();
+                    synTitle.hide();
+                }
+            }
+        });
+
+        //드래그시 유의어 추천
+        $('#myText').mouseup(function() {
+
+            var text = window.getSelection().toString();
+            if (text) {
+            
+                $.ajax({
+                    url: '/correction/synonyms/',  // 서버의 유의어 처리 URL
+                    type : 'POST',
+                    data: {'word': text},
+                    headers: { 'X-CSRFToken': csrfToken },
+                    success: function(data) {
+                        //유의어 조회 버튼 동적 생성
+                        synTitle.show();
+                        synbtn.show();
+
+                        //버튼 클릭 이벤트 핸들러 업데이트
+                        synbtn.off('click').click(function() {
+                            createSynonyms(data);
+                            $('#synonyms').css('visibility','visible');
+                            $('#synonyms').css('opacity', '1');
+                            synTitle.hide();
+                            synbtn.hide();
+                        });
+                    },
+                    error : function(xhr,status,error){
+                        alert("조회 실패 : 데이터를 불러올 수 없습니다.");
+                    }
+                });
+            }
+        });
+
+        //북마크 버튼 클릭시
+        $('#commitButton').click(addBookmark);
+
+    });//document.ready 끝
+    
+    $('#syn-button-area, #synonyms, .synonym-button' ).mousedown(function(e) {
+        e.preventDefault();    // 클릭하더라도 드래그가 취소되지 않게 함
+    });
+
+    //유의어들 띄움
+    function createSynonyms(data){
+        console.log(Object.keys(data));  // 디버깅 코드
+        var nounArray = Object.keys(data);  //dict의 key들만 배열로
+        if(nounArray.length === 0){  // 명사 배열이 비어있다면
+            $('#synonyms').show().html("<div>유의어를 조회할 수 없습니다.</div>");
+        }else{
+            //각 명사마다 명사:유의어버튼 
+            var allButtons = nounArray.map(function(target){
+                //각 유의어마다 
+                var synButtons = data[target].map(function(syn){
+                    //버튼 반환
+                    return '<button class="synonym-button" data-clipboard-text="' + syn + '">' + syn + '</button>';
+                }).join(" ");  // map함수: 배열의 원소 각각 함수 적용하여 다른 원소로 치환. 따라서 모든 버튼 html코드를 하나로 합치는 join필요함!
+                return '<div id ="'+target+'">'+target + " : " + synButtons +'</div>';
+            }).join("<br>");//모두 join해서 하나의 html로 !
+
+                    //console.log(allButtons)
+            //최종출력
+            allButtons = "<div id = 'syn-msg'>유의어를 클릭하면 클립보드에 복사됩니다.</div><br>"+allButtons
+
+            $('#synonyms').show().html(allButtons);
+            new ClipboardJS('.synonym-button'); // 클릭됐을 때 복사하는이벤트 리스너
+        }
+    }
+    //유의어 복사되었을 때, Copied 띄우기
+    var spanCopy = $('<span>').addClass('syn-copied').prepend('<ion-icon name="checkmark-outline"></ion-icon>').append('Copied');
+    $(document).on('mousedown', '.synonym-button', function(e) {
+        var targetDiv = $(this).parent();
+        targetDiv.append(spanCopy);
+        setTimeout(function() {
+            spanCopy.remove();
+        }, 1500);
+    });
+
+    function htmlToText(text) {
+        // <br> 태그를 \n으로
+        text = text.replace(/<br>/g, "\n"); //g:전역검색(모두 찾아 바꿈)
+        //  em  태그 제거
+        text = text.replace(/<em[^>]*>|<\/em>/g, "");  
+        return text;
+    }
+    function htmlEntitiesToText(text) {
+        // 각 HTML 엔티티를 해당하는 문자로 바꿉니다.
+        text = text.replace(/&lt;/g, "<");
+        text = text.replace(/&gt;/g, ">");
+        text = text.replace(/&amp;/g, "&");
+        text = text.replace(/&quot;/g, '"');
+        text = text.replace(/&apos;/g, "'");
+        return text;
+    }
+    
+    // 왼쪽 textarea 글자 수 세기
+    $('#jasoseo').on('input', function(e){
+        var content = $(this).val();
+        if (content.length > 3000) {
+            // 초과된 부분 제거
+            $(this).val(content.substring(0, 3000));
+        }
+        // 현재 글자 수 표시
+        $('#counter').html($(this).val().length + ' / 3000');
+    });
+    
+    //오른쪽 textarea 글자 수 세기
+    $('#myText').on('input', function(e){
+        var content = $(this).val();
+
+        // 현재 글자 수 표시
+        $('#counter2').html($(this).val().length + '자');
+    });
+
+    // 자소서 코칭 뜨기
+    var coachStatus = 0; // 코칭 유무
+    $('#coachButton').click(function(){
+        //로딩중 뜨기
+        var $this = $(this);
+        var $loadingIcon = $this.next('.loading-icon'); 
+        $this.prop('disabled', true); //버튼 비활성화
+        $loadingIcon.show(); //로딩아이콘 show
+        
+        $('.coaching_list').css('display','none'); // 로딩 중에는 코칭 박스 안보이게
+        $('.coaching_list').empty(); // 코칭 코멘트 초기화
+        var corrected_content = $('#myText').val();
+        $.ajax({
+            url : '/correction/correct/coaching/',
+            method : 'POST',
+            contentType : 'application/json',
+            data : JSON.stringify({
+                'content' : corrected_content 
+            }),
+            headers: { 'X-CSRFToken': csrfToken },  // Django의 CSRF 토큰을 헤더에 포함
+            success : function(data){
+                var label, advice;
+                var feedbacks = data.feedbacks;
+                coachStatus = 1;
+
+                $('.coaching_list').append('<p>코칭 결과</p>');
+                feedbacks.forEach(function(feedback){
+                    label = feedback['label'];
+                    advice = feedback['advice'];
+                    var li = $('<li>', {class : label, text : advice}); 
+                    $('.coaching_list').append(li);
+                    console.log(label + " : " + advice);
+                });
+                $('.coaching_list .good').prepend('<ion-icon name="thumbs-up-outline" id="good_icon"></ion-icon> &nbsp;'); // good 아이콘 추가
+                $('.coaching_list .bad').prepend('<ion-icon name="thumbs-down-outline" id="bad_icon"></ion-icon> &nbsp;'); // bad 아이콘 추가
+                $('.coaching_list').css('display', 'block');
+                adjustCoachingDiv(); // 코칭 위치 조절 함수
+                window.scroll({top: document.documentElement.scrollHeight, behavior: 'smooth'}); // 완료하면 자동으로 스크롤 다운
+                
+                $this.prop('disabled', false);  //버튼 비활성화  풀기
+                $loadingIcon.hide(); // 로딩 아이콘 숨기기
+
+            },
+            error : function(jqXHR, textStatus, errorThrown){
+                console.log("실패");
+                
+                $this.prop('disabled', false); //버튼 비활성화  풀기
+                $loadingIcon.hide(); // 로딩 아이콘 숨기기
+
+            }
+        });
+    })
+
+    // 자소서 코칭 위치 조절 + 중간-바닥 공백(footer) 조절 (버튼 클릭 시, 브라우저 크기 조절 시, 좌우 input 발생 시)
+    function adjustCoachingDiv() {
+        var left = parseInt($('#jasoseo').css('height'));
+        var rightText = parseInt($('#myText').css('height'));
+        var rightView = parseInt($('#myTextView').css('height'));
+        
+        // 코칭을 받지 않았을 때
+        if (coachStatus == 0) {
+            // 뷰모드일 경우
+            if ($('#myText').css('display') == 'none') {
+                if (left >= rightView) {
+                    $('.coach_left').css('height', left + 150);
+                } else {
+                    $('.coach_left').css('height', rightView + 150);
+                }
+            } else {
+            // 편집모드일 경우
+                if (left >= rightText) {
+                    $('.coach_left').css('height', left + 150);
+                } else {
+                    $('.coach_left').css('height', rightText + 150);
+                };
+            };
+            $('.coaching_list').css('width', parseInt($('#correctionForm').css('width')) - 60);
+        }
+        // 코칭을 받았을 때
+        else {
+            // 뷰모드일 경우
+            if ($('#myText').css('display') == 'none') {
+                if (left >= rightView) {
+                    $('.coach_left').css('height', left + 115);
+                    $('#bottom_space').css('height', 50);
+                } else {
+                    $('.coach_left').css('height', rightView + 115);
+                    $('#bottom_space').css('height', 50);
+                }
+            } else {
+            // 편집모드일 경우
+                if (left >= rightText) {
+                    $('.coach_left').css('height', left + 115);
+                    $('#bottom_space').css('height', 50);
+                } else {
+                    $('.coach_left').css('height', rightText + 115);
+                    $('#bottom_space').css('height', 50);
+                };
+            };
+            $('.coaching_list').css('width', parseInt($('#correctionForm').css('width')) - 60);
+        }
+    };
+
+
+    //mypage저장 버튼 누르면 -> 모달 창 생성, 유저의 카테고리 받아옴
+    $('#saveButton').click(function(){
+        window.scroll({top: 0}); // 스크롤 맨 위로
+        $('body').css('overflow-y', 'hidden'); // 스크롤 막기
+        modal.style.visibility = 'visible';
+        modal.style.opacity = '1';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        $('#titleInput').val('');  // 입력창의 값을 빈 문자열로 설정
+        var select = $("#categoryInput");
+        select.empty();
+        select.append('<option value="">선택 없음</option>');
+        $.ajax({
+            url: '/correction/correct/categories/',
+            type : 'GET',
+            success : function(data){
+                console.log(data);
+                data['categories'].forEach(function(categoryName){
+                    var option = $('<option>', {value : categoryName, text : categoryName});    //카테고리option
+                    select.append(option);
+                });
+            }
+        });
+    }); 
+
+    //mypage 저장 모달창에서 카테고리 추가하기 버튼 구현
+    $('#addCategoryButton').click(function(){
+        var select = $("#categoryInput");
+        var exists = false;
+        var new_category = prompt("추가할 카테고리 이름을 입력해주세요.");
+
+        if(new_category===null){
+            //취소누르면
+            return;    
+        }else if (new_category.trim().length===0){
+            //한 글자 이상 누르지 않으면
+            alert("한 글자 이상 입력해주세요");
+            return;
+        }
+        
+        //이미 존재하는 카테고리라면
+        select.find('option').each(function(){  //배열은 forEach, jquery객체는 each(index,각 객체) 
+            if(this.value.trim() === new_category){
+                alert('이미 존재하는 카테고리 입니다.');
+                exists = true;
+                return false;   //each 순회만 중단 함. 전체 함수 종료를 위해서 exists 생성
+            }
+        })
+        
+        if(exists){
+            return; //이미 존재하는 카테고리라면 함수 종료
+        }
+
+        //새로운 카테고리 저장 및 띄우기
+        $.ajax({
+            url : '/correction/correct/categories/',
+            type : 'POST',
+            contentType : 'application/json',
+            data : JSON.stringify({
+                category_name : new_category 
+            }),
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success : function(data){
+                //성공적으로 카테고리 생성함
+                var option = $('<option>', {value : data.category_name, text : data.category_name});
+                select.append(option);
+            },
+            error : function(jqXHR, textStatus, errorThrown){
+                alert("카테고리 추가에 실패했습니다. 다시 시도해주세요.");
+            }
+        })
+    })
+
+    //모달창에서 확인클릭 -> mypage에 최종 저장 됨
+    $('#save_okBtn').click(function(){
+
+        var title = $('#titleInput').val();
+        var category = $('#categoryInput').val();   //사용자가 선택한 option의 value가 곧 select 태그의 value
+        var corrected_content = $('#myText').val();
+
+        if (title.trim() === '') {
+            alert('파일 제목을 입력해주세요.');
+            return; // 입력이 없으면 함수 종료
+        }
+        if (category === '') {
+            alert('카테고리를 선택해주세요.');
+            return; // 카테고리가 선택되지 않았으면 함수 종료
+        }            
+        
+        $.ajax({
+            url: '/correction/correct/savejasoseo/',
+            type : 'POST',
+            data : { //ajax 의 data기본 옵션은 application/x-www-form-urlencoded
+                'title' : title,
+                'category' : category,
+                'content' : corrected_content,
+            },
+            headers: { 'X-CSRFToken': csrfToken },  // Django의 CSRF 토큰을 헤더에 포함
+            success : function(data){
+                alert('저장이 완료되었습니다.');
+                //modal.style.display='none';
+                modal.style.visibility = 'hidden';
+                modal.style.opacity = '0';
+                $('body').css('overflow-y','unset'); // 스크롤 막기 풀기
+            },
+            error : function(jqXHR, textStatus, errorThrown){
+                alert("저장에 실패했습니다. 다시 시도해주세요.");
+            }
+        });
+    });
+
+    //모달창에서 취소버튼 클릭-> 모달창 닫기
+    $('#save_closeBtn').click(function(){
+        modal.style.visibility='hidden';
+        modal.style.opacity = '0';
+        $('body').css('overflow-y','unset'); // 스크롤 막기 풀기
+    });
+
+    //모달창 밖 클릭했을 때도 -> 모달창 닫기
+    const modal = document.getElementById('modal');
+    window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.visibility = "hidden";
+          modal.style.opacity = '0';
+          $('body').css('overflow-y','unset'); // 스크롤 막기 풀기
+        };
+    };
+
+    function setTimeRule(time){
+        if(time<10){
+            return 0+time
+        }
+        return time
+    }
+
+    //북마크 기능 start
+    var bookmarkData = {};
+    var colorIndex = 0;
+    var colors = ['#B9FBC0', '#93F1EB', '#90DBF4', '#A3C4F3', '#CFBAF0','#f1c0e8', '#FFCFD2','#FDE4CF','#FBF8CC'];     // 북마크 색상 list 
+
+    subscribe = {{request.user.subscribe}}
+    if(subscribe == 1){
+        //구독자일 경우
+        maxBookmarks = 6;
+        user_state = "";
+    }else{
+        maxBookmarks = 2;
+        user_state = "무료회원의 경우"
+    }
+
+    var currentVersion = 0;
+
+    function Bookmark(version,text) {
+        var color = colors[colorIndex];
+        colorIndex = (colorIndex + 1) % colors.length;  // 리스트의 끝 -> 다시 0으로 되돌아감
+
+        this.version = version;
+        this.text = text;
+        this.textLength = text.length;
+        this.$button = $('<input>')
+            .attr('type', 'button')
+            .attr('id', 'bookmark'+this.version)
+            .attr('hidden', true)
+            .click(() => {
+                $('#myText').val(this.text);
+                $('#counter2').html(this.textLength + '자'); // 저장된 길이 사용
+
+            });
+        
+        this.$label_bookmark = $('<label>')
+            .attr('for', 'bookmark'+this.version)
+            .attr('id', 'label_bookmark'+this.version)
+            .attr('onclick', '')
+            .css('color', color)
+            .append("<ion-icon name='bookmark-sharp' id='icon_bookmark' class='bookmarkIcon'></ion-icon>")
+        
+        
+        this.$deleteButton = $('<input>')
+            .attr('type', 'button')
+            .attr('id', 'delete_bookmark'+this.version)
+            .attr('hidden', true)
+            .attr('disabled', true)
+            .click(() => {
+                this.$button.parent().remove();
+                delete bookmarkData[this.version];
+            });
+        
+        this.$label_delete = $('<label>')
+            .attr('for', 'delete_bookmark'+this.version)
+            .attr('id', 'label_delete')
+            .attr('onclick', '')
+            .append("<ion-icon name='close-circle-outline' id='icon_delete'></ion-icon>")
+
+        this.$markedAt = $('<span>')
+            .attr('id', 'time_bookmark'+this.version)
+            .addClass('markedAt')
+
+        this.render = function() {
+            //클릭한 시간 정보 생성
+            var date = new Date();
+            var hour = date.getHours();
+            var minute = date.getMinutes();
+            var hourString = hour.toString();
+            var minuteString = minute.toString();
+            this.$markedAt.text(setTimeRule(hourString) + "시 " + setTimeRule(minuteString) + "분");
+
+            this.$delete_container = $('<div>')
+                .addClass('delete_container')
+                .append(this.$deleteButton, this.$label_delete, this.$markedAt); // deleteButton과 markedAt을 포함하는 새로운 div 생성
+            
+
+            var $bookmarkDiv = $('<div>')
+                .addClass('bookmarkContainer')
+                .attr('id', 'bookmarkContainer'+this.version)
+                .append(this.$button, this.$label_bookmark, this.$delete_container);
+
+            $('#commits').append($bookmarkDiv);
+        };
+    }
+    // 북마크 추가 가능한지 check
+    function checkBookmarks(){
+        if(Object.keys(bookmarkData).length >= maxBookmarks){
+            alert(user_state+" 북마크는 "+ maxBookmarks+"개까지만 생성 할 수 있습니다.\n 기존의 북마크를 삭제 후 다시 추가해주세요.");
+            return false;
+        }
+        return true;
+    }
+
+    //북마크 추가
+    function addBookmark() {
+        if(!checkBookmarks()){
+            return;
+        }
+        var text = $('#myText').val();
+        bookmarkData[++currentVersion] = new Bookmark(currentVersion, text);
+        bookmarkData[currentVersion].render();
+
+        //모든 북마크 제자리
+        $('.bookmarkIcon').removeClass('active');
+        $('.delete_container').css('transform', '');
+    }
+
+    //북마크 호버
+    $(document).on('mouseover', '[id^=label_bookmark]', function() {
+        var container = $(this).siblings('.delete_container');
+        var delete_input = container.children('input');
+        var delete_icon = container.find('#icon_delete');
+        var bookmark_time = container.children('span');
+        delete_input.attr('disabled', false);
+        delete_icon.css('visibility', 'visible');
+        delete_icon.css('opacity', '1');
+        bookmark_time.css('visibility', 'visible');
+        bookmark_time.css('opacity', '1');
+    });
+    $(document).on('mouseout', '[id^=label_bookmark]', function() {
+        var container = $(this).siblings('.delete_container');
+        var delete_input = container.children('input');
+        var delete_icon = container.find('#icon_delete');
+        var bookmark_time = container.children('span');
+        setTimeout(function() {
+            delete_input.attr('disabled', true);
+            delete_icon.css('visibility', 'hidden');
+            delete_icon.css('opacity', '0');
+            bookmark_time.css('visibility', 'hidden');
+            bookmark_time.css('opacity', '0');
+        }, 2000);
+    });
+    
+
+    // 북마크 클릭 시 textarea, 코칭 조절
+    $(document).on('click', function() {
+        adjustTextareaHeight_right();
+        // 코칭 위치 조절
+        adjustCoachingDiv();
+    })
+
+    $('body').on('click', '.bookmarkIcon', function() {
+       //다른 북마크 다 제자리
+        $('.bookmarkIcon').removeClass('active');
+        $('.delete_container').css('transform', '');  // 모든 delete_container의 transform 초기화
+       //클릭된 북마크만 active
+        $(this).addClass('active');
+        var parentContainer = $(this).closest('.bookmarkContainer');
+        parentContainer.find('.delete_container').css('transform', 'translateX(15px)'); // 클릭된 아이콘의 부모 요소 내 delete_container만 이동!!
+    });
+    
+    $('#myText').on('click',function(){
+        //모든 북마크 제자리
+        $('.bookmarkIcon').removeClass('active');
+        $('.delete_container').css('transform', '');
+    })
+
+</script>
+<!-- clipboard.js cdn 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+<!-- textarea 자동조절, 클립보드 복사 -->
+<script type="text/javascript" src="/static/js/correction/correct_result.js"></script>
+<script type="text/javascript" src="{%static 'js/correction/tutorial.js' %}"></script>
+{% endblock %}

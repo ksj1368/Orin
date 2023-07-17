@@ -1,0 +1,222 @@
+/* 마이페이지 메뉴 */
+.button_area {
+    position: absolute;
+    top: 20%;
+    right: 25%;
+    z-index: 20;
+}
+#mypage_menu {
+    border: 0px;
+    background: none;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.5rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    cursor: pointer;
+}
+/* 로그인 영역 */
+.profile {
+    width: 80%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 페이지 제목 */
+#title {
+    font-size: clamp(1.2rem, 2.5vw, 3rem);
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+    right: 20%;
+}
+/* 내 정보 확인 */
+#table {
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+#name {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 15px;
+}
+#content {
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 0px;
+}
+/* 정보수정, 탈퇴버튼, 구독버튼 */
+.info_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#info_button {
+    width: 15%;
+    max-width: 120px;
+    height: 35px;
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-family: "PretendardVariable.woff2";
+    font-weight: bold;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    text-decoration: none;
+}
+#info_button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+#delete_button {
+    width: 15%;
+    max-width: 120px;
+    height: 35px;
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-family: "PretendardVariable.woff2";
+    font-weight: bold;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    text-decoration: none;
+}
+#delete_button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+#subscription_button {
+    width: 15%;
+    max-width: 120px;
+    height: 35px;
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    font-weight: bold;
+}
+#subscription_button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+/* 회원탈퇴 팝업창 */
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+#modal {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    animation: fadein 0.3s ease-out;
+}
+#modal_content {
+    width: 40%;
+    height: 30%;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    padding: 3% 2% 1.5% 2%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+#modal_content > h2 {
+    margin-top: 0px;
+    font-size: clamp(1rem, 1.8vw, 1.5rem);
+    padding-left: 3%;
+}
+#close_button {
+    position: absolute;
+    right: 4%;
+    top: 4%;
+    font-size: clamp(1rem, 2vw, 2rem);
+    cursor: pointer;
+}
+#delete_comment {
+    font-size: clamp(0.5rem, 1.5vw, 1rem);
+    text-align: center;
+    line-height: 1.5rem;
+    flex-grow: 1;
+}
+#alert {
+    font-weight: bold;
+    color: red;
+}
+#pw_auth {
+    text-align: center;
+    flex-grow: 1;
+}
+#pw_auth > small {
+    font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+    line-height: 1.5rem;
+}
+#label_pw {
+    font-size: clamp(0.5rem, 1.5vw, 1rem);
+}
+.text_pw {
+    border-radius: 5px;
+    border: 1px solid var(--line_color);
+    outline: none;
+    width: 40%;
+    height: 35%;
+    max-height: 25px;
+}
+.text_pw:hover, .text_pw:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+#button_area {
+    align-self: flex-end;
+    font-size: clamp(0.5rem, 1.5vw, 1rem);
+    font-weight: bold;
+}
+#button_area > label {
+    cursor: pointer;
+}
+#submit_button {
+    font-family: var(--font);
+    font-size: clamp(0.5rem, 1.5vw, 1rem);
+    padding: 5px 10px;
+}
+/* 에러 */
+.is-invalid {
+    border-radius: 5px;
+    border: 1px solid var(--line_color);
+    outline: none;
+    width: 40%;
+}
+.is-invalid:hover, .is-invalid:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+.invalid-feedback {
+    color: red;
+    font-size: clamp(0.1rem, 1.5vw, 0.8rem);
+}

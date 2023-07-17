@@ -1,0 +1,101 @@
+/* 개별질문보기페이지 */
+/* modal */
+.modal-content {
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    margin: 5% auto;
+    width: 75%;
+    height: 80%;
+}
+.scroll-container{
+    overflow-y: auto;
+    max-height: 60vh; /* 모달 창의 최대 높이 설정 */
+    margin-left: 2%;
+}
+h1.titlenameinquestionmodal {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    left: 3% !important;
+    margin: 1.5%;
+}
+hr {
+    background: var(--point_color);
+    height:1px;
+    border:0;
+    width: 95%;
+}
+button {
+    width: 150px;
+    height: 45px;
+}
+.modalpostnamediv, .modaluserdiv, .modalcontentsdiv, .modalcategorydiv, .modalcontentsdiv, .modaldatediv {
+    text-align: left;
+    margin: 0 5% ;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+    height: fit-content;
+    font-weight: normal;
+}
+p.postnamelabel, p.userlabel, p.categorylabel, p.contentslabel, p.datelabel {
+    text-align: left;
+    color: var(--point_color);
+    width: 18%;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+}
+div#imageContainer {
+    text-align: center;
+}
+div.questionFormbtn {
+    text-align: center;
+    margin: 0 5%;
+    padding: 1%;
+    font-size:  clamp(0.6rem, 2vw, 1.2rem) !important;
+}
+#answer_btn {
+    text-align: center;
+    vertical-align: middle;
+    margin: 2%;
+}
+div.questionmodalcontents {
+    letter-spacing: 1.5px;
+    line-height: 190%;
+    word-break: keep-all;
+    width: 80%;
+    min-height: auto;
+    overflow-wrap: break-word;
+}
+/* 답변 영역 */
+.answertitle {
+    position: relative !important;
+    top: 2% !important;
+    left: 3% !important;
+    width: fit-content;
+    font-weight: normal;
+}
+.responderdiv, .answerdatediv, .answercontnetsdiv {
+    text-align: left;
+    margin: 0 5% ;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+    height: fit-content;
+    font-weight: normal;
+}
+.responderlabel, .answerdatelabel, .answercontentslabel {
+    text-align: left;
+    color: var(--point_color);
+    width: 18%;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+}
+div.answercontentspdiv {
+    letter-spacing: 1.5px;
+    line-height: 190%;
+    word-break: keep-all;
+    width: 80%;
+}

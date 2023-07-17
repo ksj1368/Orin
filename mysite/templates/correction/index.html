@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>교정서비스</title>
+    <link rel='stylesheet' href="{% static 'css/correction/index.css' %}">
+    <script src="https://kit.fontawesome.com/d86de0fb4d.js" crossorigin="anonymous"></script> 
+</head>
+
+<!-- 맨 위로 이동 -->
+<div id="scroll-top">
+    <input type="button" id="top" hidden>
+    <label for="top" onclick>
+        <ion-icon name="arrow-up-sharp" id="icon_top"></ion-icon>
+    </label>
+</div>
+<!-- 맨 아래로 이동 -->
+<div id="scroll-bottom">
+    <input type="button" id="bottom" hidden>
+    <label for="bottom" onclick>
+        <ion-icon name="arrow-down-sharp" id="icon_bottom"></ion-icon>
+    </label>
+</div>
+
+<!-- 주요기능 -->
+<form id = "correctionForm" action =  "{% url 'correction:correct' %}" method = 'post'>
+    {% csrf_token %}
+
+    <div class="head">
+        <span id= 'info'>자기소개서 입력</span>
+        <input type="checkbox" id="option1" name="option1" value="correct_grammar">
+        <label for="option1">문법 교정</label> &nbsp;&nbsp;&nbsp;
+        <input type="checkbox" id="option2" name="option2" value="create_subtitle">
+        <label for="option2">소제목 추천</label> &nbsp;&nbsp;&nbsp;
+        <button type = "submit" id = 'correctButton'>교정하기</button>
+        <span class = "loading-icon">
+            <i class="fa-solid fa-spinner fa-spin-pulse fa-xs"></i>
+        </span>
+        <div class="error_box">
+            <div id = "option-error">옵션을 한 개 이상 선택해주세요.</div> &nbsp;&nbsp;&nbsp;
+            <div id = "jasoseo-error"> 내용을 한 글자 이상 입력해주세요.</div>
+        </div>
+        <div id = "only-option-error">옵션을 한 개 이상 선택해주세요.</div>
+        <div id = "mini-title-comment">구간별 소제목을 추천받고 싶다면, 슬래시 두 개(//)로 구분해주세요.</div>
+    </div>
+
+    <div id="content">
+        <!-- 클립보드 복사 -->
+        <input type="button" id="copy" hidden>
+        <label for="copy" onclick>
+            <ion-icon name="copy-outline" id="icon_copy" data-clipboard-target="#jasoseo"></ion-icon>
+        </label>
+        <div id="alarm_copy"></div>
+        <!-- 초기화 -->
+        <input type="button" id="reset" hidden>
+        <label for="reset" onclick>
+            <ion-icon name="close-outline" id="icon_reset"></ion-icon>
+        </label>
+        <!-- hidden textarea -->
+        <textarea id="hidden_textarea" rows='1'></textarea>
+        <!-- 텍스트 입력 -->
+        <textarea placeholder = "내용을 입력하세요" name = "jasoseo" id = "jasoseo" rows="1" autofocus>{{jasoseo}}</textarea>
+        <!-- 글자수 -->
+        <span id = "counter">0 / 3000</span>
+    </div>
+</form>
+
+<!-- clipboard.js cdn 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+<!-- textarea 자동조절, 클립보드 복사 -->
+<script type="text/javascript" src="/static/js/correction/index.js"></script>
+
+{% endblock  %}

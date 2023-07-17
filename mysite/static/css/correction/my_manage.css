@@ -1,0 +1,322 @@
+/* 자소서 전체창 */
+.titlenamemymanage {
+    margin-right: 0%;
+    font-size: clamp(1rem, 5vw, 2rem);
+    margin: 6% 15% 1% 15%;
+}
+.jasoseodiv {
+    width: 70%;
+    height: 70%;
+    border: 1px solid var(--line_color);
+    border-radius: 20px;
+    box-shadow: 0px 0px 7px var(--line_color);
+    font: var(--font);
+    font-size: clamp(0.7rem, 2vw 1rem);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    align-content: center;
+    margin: 0% 15% auto;
+    justify-content: flex-start;
+}
+/* 마이페이지 메뉴 */
+.button_area {
+    position: relative;
+    width: 100%;
+    bottom: 1%;
+    text-align: right;
+    right: 15%;
+}
+#mypage_menu {
+    border: 0px;
+    background: none;
+    color: black;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.5rem, 2vw, 0.9rem);
+    font-weight: bold;
+    cursor: pointer;
+}
+/* 왼쪽 카테고리 목록 */
+#add_categorybtn{
+    width: 100%;
+    max-width: 27px;
+    min-width: 16px;
+    padding: 10px;
+}
+#delete_categorybtn{
+    width: 100%;
+    max-width: 27px;
+    min-width: 16px;
+    padding: 10px 0 10px 0;
+}
+.category-list {
+    height: 100%;
+    width: 25%;
+    float: left;
+    background-color: #ebebeb;
+    border-radius: 20px 0 0 20px;
+    font: clamp(0.5rem 2vw 1.2rem);
+}
+.category-linkul {
+    padding-left: 0;
+}
+.category-link {
+    padding: 3% 0 1% 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.category-link:hover{
+    background-color: #d6d4d4;
+    border-radius: 7px;
+}
+.category-link:hover, .category-link.active {
+    background-color: #d6d4d4;
+    border-radius: 7px;
+    padding: 3% 0 1% 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+div.scroll-container {
+    margin: 0 3% 0 3%;
+    overflow-y: scroll; 
+    height: 90%;
+}
+.category-name {
+    display: inline-block;
+    max-width: 80%; /* 적절한 너비 설정 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+a.category-link {
+    width: fit-content;
+    text-overflow: ellipsis;
+}
+.categorybtnarea {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 3px -3px;
+}
+#add_categorybtn {
+    cursor: pointer;
+    padding: 10px;
+}
+#delete_categorybtn {
+    cursor: pointer;
+    padding: 10px 0px;
+}
+/* 오른쪽 자기소개서 목록 */
+
+#add_jasoseobtn {
+    width: 100%;
+    max-width: 27px;
+    min-width: 16px;
+    padding: 10px;
+    cursor: pointer;
+}
+#post-list{
+    padding: 0;
+}
+.contents-list {
+    height: 100%;
+    width: 75%;
+    float: left;
+}
+.emptydiv {
+    height: 10%;
+    background-color: white;
+    border-radius: 0 19px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 3px -3px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.jasoseotbdiv {
+    overflow-y: scroll; 
+    height: 90%;
+}
+table.jasoseotb {
+    width: 99%;
+    table-layout: fixed;
+}
+td.titletd {
+    cursor: pointer;    
+    padding: 10px 10px 10px 10%;
+    width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+div.titlemodaldiv {
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.datetd {
+    width: 20%;
+    padding: 10px;
+    text-align: right;
+    font-size: clamp(0.5rem, 1vw, 1rem);
+}
+.deletetd {
+    width: 15%;
+    text-align: center;
+    padding: 10px;
+}
+.deleteimg {
+    width: 60%;
+    max-width: 27px;
+    min-width: 18px;
+}
+/* 선택된 카테고리 표시 영역 */
+.selected-category {
+    padding: 20px;
+    margin-left: 220px;
+}
+a.category-link.active {
+    width: fit-content;
+    text-overflow: ellipsis;
+}
+
+/* 모달 스타일링 */
+.modal, #modal, #myModal, #add_j_Modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;   
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    margin: 5% auto;
+    width: 75%;
+    height: 80%;
+}
+.modal-content-container {
+    overflow-y: auto;
+    max-height: 73vh; /* 모달 창의 최대 높이 설정 */
+}
+.titlenameinquestionmodal {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    left: 3% !important;
+    margin-bottom: 1.5%;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.close:hover {
+    background-color: white !important;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+body.modal-open {
+    overflow: hidden;
+}
+/* 카테고리 삭제 모달 */
+#delete_category_modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;   
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content-deletecat {
+    width: 30%;
+    min-width: 350px;
+    height: 15%;
+    min-height: 150px;
+    border: none;
+    position: relative;
+    background-color: white;
+    border-radius: 5px;
+    margin: 5% auto;
+    padding: 3% 3% 1% 3%;
+}
+.modaldeletecattitlename {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-size: clamp(1rem, 1.7vw, 1.5rem);
+    font-weight: bold;
+}
+#category_select {
+    width: calc(60% + 21.6px);
+    height: 30px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    padding: 1px 10px;
+    outline: none;
+    margin: 15px;
+}
+div.category_selectdiv {
+    text-align: center;
+}
+input[type='submit'] {
+    width: 150px;
+    height: 35px;
+    margin: 15px;
+}
+/* 자소서 모달창 */
+.jmodaltitle, .jmodaldate, .jmodalcontent, .jmodalcat {
+    text-align: left;
+    margin: 0 5% ;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+    height: fit-content;
+    font-weight: normal;
+}
+.questionFormbtn {
+    text-align: center;
+}
+.jmodaltitlelabel, .jmodaldatelabel, .jmodalcontentlabel, .jmodalcatlabel {
+    text-align: left;
+    color: var(--point_color);
+    width: 14%;
+    font-size:  clamp(0.6rem, 2vw, 1.1rem) !important;
+    font-family: var(--font);
+}
+#content {
+    width: 90%;
+    letter-spacing: 1.5px;
+    line-height: 190%;
+    min-height: 50vh;
+    word-break: keep-all;
+    font-family: var(--font);
+}
+.questionFormbtn {
+    padding: 10px;
+}
+button, #downloadButton {
+    height: 35px;
+    width: 10%;
+}
+.jscroll-container {
+    padding-top: 5%;
+}

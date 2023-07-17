@@ -1,0 +1,200 @@
+/* 주요기능 영역 */
+.find_pw {
+    width: 35%;
+    height: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 페이지 제목 */
+#title {
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 30px;
+}
+/* 아이디 */
+#id {
+    width: 100%;
+    height: auto;
+}
+#label_id {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+.text_id {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    outline: none;
+}
+.text_id:hover, .text_id:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 이름 */
+#name {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+#label_name {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+.text_name {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    outline: none;
+}
+.text_name:hover, .text_name:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 이메일 */
+#email {
+    width: 100%;
+    height: auto;
+    margin-top: 15px;
+}
+#label_email {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+#email small {
+    float: right;
+    position: relative;
+    right: -20px;
+    top: 5px;
+    font-size: clamp(0.1rem, 1.5vw, 0.8rem);
+}
+.text_email {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    outline: none;
+}
+.text_email:hover, .text_email:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 인증번호 */
+.auth_area {
+    position: relative;
+}
+#label_auth {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+#timeset {
+    position: absolute;
+    right: -10px;
+    top: 35px;
+    font-weight: bold;
+    color: red;
+}
+#input_auth_num {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    outline: none;
+}
+#input_auth_num:hover {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+#id_auth_confirm {
+    height: 25px;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    font-weight: bold;
+    border: 1px solid var(--point_color);
+    border-radius: 50px;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    float: right;
+    position: absolute;
+    right: -20px;
+    top: -2px;
+}
+#id_auth_confirm:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px var(--line_color);
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+/* 버튼 */
+#button_area {
+    text-align: center;
+    width: 100%;
+}
+#find_pw {
+    width: 70%;
+    height: 35px;
+    background: white;
+    border: 1px solid var(--point_color);
+    border-radius: 50px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    font-family: "PretendardVariable.woff2";
+    color: var(--point_color);
+}
+#find_pw:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px var(--line_color);
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+#login_page {
+    width: 70%;
+    height: 35px;
+    background: white;
+    border: 1px solid var(--point_color);
+    border-radius: 50px;
+    margin: 10px auto;
+    position: relative;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    font-family: "PretendardVariable.woff2";
+    color: var(--point_color);
+}
+#login_page:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px var(--line_color);
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+/* 아이디찾기 */
+.find_id {
+    text-align: center;
+    color: gray;
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+}
+#find_id {
+    color: black;
+}

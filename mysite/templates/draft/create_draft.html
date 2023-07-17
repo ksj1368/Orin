@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/draft/create_draft.css'%}">
+    <title>초안 생성</title>
+</head>
+<div class='container'>
+    <form method="post" id="create">
+        {% csrf_token %}
+        <div class='form_container'>
+        {{ form.as_p }}
+        </div>
+        {% comment %} <div class='select'>
+            <input id="select" type="radio" name="model" value="chatgpt">
+            <label for="select">ChatGPT
+                <img src="{% static 'img/chatgpt_icon.png' %}" alt="" class="icon">
+            </label>
+            <input  id="select2" type="radio" name="model" value="bard">
+            <label for="select2">Bard&nbsp;
+                <img src="{% static 'img/bard_icon.png' %}" alt="" class="icon">
+            </label>
+        </div> {% endcomment %}
+        <div>
+            <br>
+            <button type="submit" class="button">초안 생성하기</button>
+        </div>
+    </form>
+</div>
+<div id="loading">
+    <img src="{% static 'img/loading_icon.gif' %}" alt="loading">
+</div>
+
+<script>
+$(document).ready(function() {
+    $('#loading').hide();
+            $('#create').submit(function(){
+            $('#loading').show();
+                    return true;  
+        });
+    });
+</script>
+{% endblock %}

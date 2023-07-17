@@ -1,0 +1,71 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <link href="{% static 'css/main.css' %}" rel="stylesheet">
+        <link href="{% static 'css/board/answer.css'%}" rel="stylesheet">
+        <link href="{% static 'css/board/question.css'%}" rel="stylesheet">
+        <link href="{% static 'css/board/eachquestion.css'%}" rel="stylesheet">
+        <link href="{% static 'css/board/qna.css'%}" rel="stylesheet">
+        <title>질문페이지</title>
+    </head>
+    <p>접근 불가능한 페이지 입니다.</p>
+    <body style="display: none;">
+        <div class="answer_question">
+            <div  class="postnamediv">
+                <p id="postnamelabel">제목</p>
+                <p id = "postname">{{question.postname}}</p>
+            </div>
+            <div>
+                <p>작성자</p>
+                <p id = "user">{{question.user}}</p>
+                </div>
+            <div>
+                <p>카테고리</p>
+                <p id = "category">{{question.category}}</p>
+            </div>
+            <div>
+                <p>질문</p>
+                <p id = "contents">{{question.contents}}</p>
+            </div>
+            <div>
+                <p>작성일자</p>
+                <p id = "created_at">{{question.created_at|date:"Y. m. d. H:i"}}</p>
+            </div>
+             <div>
+            <!-- 이미지-->
+            {% if question.image %}
+                <img src = "{{question.image.url}}" alt='{{ question.image }}' height="300" loading="lazy">
+            {% endif %}
+            </div>
+            <div>
+                <p id="req_user_level" style="display: none;">{{ user_level }}</p>
+                <p id="req_user_name"style="display: none;">{{request.user}}</p>
+            </div>
+        </div>
+        <div id = "answer_list">
+            {% for answer in answer_list %}
+            <h2 class="answertitle">답변</h2>
+            <hr>
+            <div class="responderdiv">
+                <p class="responderlabel">작성자</p>
+                <p class="responder">{{answer.user}}</p>
+            </div>
+            <div class="answerdatediv">
+                <p class="answerdatelabel">작성일자</p>
+                <p class="answerdate">{{answer.created_at|date:"Y. m. d. H:i"}}</p>
+            </div>
+            <div class="answercontnetsdiv">
+                <p class="answercontentslabel">답변 내용</p>
+                <div class="answercontentspdiv">
+                    <p class="answercontents">{{answer.content}}</p>
+                </div>
+            </div>    
+            {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+</script>

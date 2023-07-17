@@ -1,0 +1,44 @@
+:root {
+    --point_color : #696cff;
+    --point_color2 : #88C8FF;
+    --line_color : #CFCDCD;
+    --text_color : black;
+    --font : "PretendardVariable.woff2";
+}
+html{
+    scroll-behavior: smooth;
+    background-color: white;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+ul {
+    list-style: none;
+}
+button, .button, #button {
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font: var(--font);
+    font-weight: bold;
+}
+button:hover, .button:hover, #button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    color: white;
+    transition: 0.3s ease-out;
+}
+input {
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+}
+h1.titlename {
+    font-family: var(--font);
+    font-weight: bold;
+    font-size: xx-large;
+}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/common/my_profile_update.css'%}">
+    <title>마이페이지 - 내정보수정</title>
+</head>
+
+<!-- 마이페이지 메뉴 -->
+<div class="button_area">
+    <input type="button" onclick = "location.href = '{% url 'correction:my_manage' %}'" value = '글 관리' id="mypage_menu"></input>
+    <input type="button" onclick = "location.href = '{% url 'board:my_qna' %}'" value = '내 문의내역' id="mypage_menu"></input>
+    <input type="button" onclick = "location.href = '{% url 'common:my_profile' %}'" value = '내 정보' id="mypage_menu"></input>
+</div>
+
+<!-- 주요기능 -->
+<form method="POST">
+    {% csrf_token %}
+    <!-- 타이틀 -->
+    <p id="title">내 정보 수정</p>
+    <!-- 내 정보 -->
+    <table id="table">
+        <tr>
+            <td id="name_id">이름</td>
+            <td id="content_id">&nbsp;{{ user_change_form.name|add_class:"text_name" }}</td>
+        </tr>
+        <tr>
+            <td id="name">이메일</td>
+            <td id="content">&nbsp;{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td id="name">비밀번호 </td>
+            <td id="content">&nbsp;▒▒▒▒▒▒▒▒</td>
+        </tr>
+        <tr>
+            <td id="name">아이디 </td>
+            {% if user.level == '0'%}
+            <td id="content">&nbsp;{{ user.user_id }}(개발자)</td>
+            {% elif user.level == '1' %}
+            <td id="content">&nbsp;{{ user.user_id }}(관리자)</td>
+            {% else %}
+            <td id="content">&nbsp;{{ user.user_id }}</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td id="name_hp">휴대폰 번호</td>
+            <td id="content_hp">&nbsp;{{ user_change_form.hp|add_class:"text_hp" }}</td>
+        </tr>
+        <tr>
+            <td id="name">구독상태 </td>
+            {% if user.subscribe == '0' %}
+            <td id="content">&nbsp;무료 회원</td>
+            {% elif user.subscribe == '1' %}
+            <td id="content">&nbsp;구독자 &nbsp;&nbsp; {{ user.subscribe_joined }}</td>
+            {% endif %}
+        </tr>
+    </table>
+
+    <!-- 수정 버튼 -->
+    <div class="update_button_area">
+        {% if user.is_authenticated and user.socialaccount_set.all.0.provider == "google" %}
+        {% else %}
+        <input type="button" onclick = "location.href = '{% url 'common:password_edit' %}'" value = '비밀번호변경' id="button"></input>
+        {% endif %}
+        &nbsp;&nbsp;&nbsp;
+        <button type="submit" id="button">완료</button>
+    </div>
+</form>
+
+<div>
+    <script type = "text/javascript">
+        function maxLengthCheck(object){
+            if (object.value.length > object.maxLength) {
+                object.value = object.value.slice(0, object.maxLength);
+                }   
+        }
+    </script>
+</div>
+{% endblock %}

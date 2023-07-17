@@ -1,0 +1,95 @@
+/* 모달 바깥 영역 */
+.modal {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    transition: 0.3s ease-out;
+}
+/* 모달 영역 */
+#modal_content {
+    width: 40%;
+    min-width: 350px;
+    height: 25%;
+    min-height: 180px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    padding: 3% 3% 2% 3%;
+}
+p {
+    margin-top: 0px;
+    margin-bottom: 25px;
+    font-size: clamp(1rem, 1.7vw, 1.5rem);
+    font-weight: bold;
+}
+label {
+    font-weight: bold;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+/* 파일제목 */
+#inputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    margin-left: 25px;
+}
+#titleInput {
+    width: 60%;
+    height: 26.4px;
+    background-color: white;
+    font-style: var(--font);
+    padding: 1px 10px;
+}
+#titleInput:hover, #titleInput:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 카테고리 */
+#category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+#categoryInput {
+    width: calc(60% + 9px);
+    height: 30px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    padding: 1px 10px;
+    -moz-appearance: none; /* Firefox */ 
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance : none;
+    outline: none;
+    background : url('/static/img/arrow-down.svg') no-repeat 97% 50%/15px auto;
+}
+#categoryInput:hover, #categoryInput:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+#categoryInput::-ms-expand {
+    display: none; /* IE 기본 스타일 제거 */
+ }
+ #addCategoryButton {
+    cursor: pointer;
+    font-size: 22px;
+    position: absolute;
+    top: 4px;
+}
+/* 버튼 영역 */
+#check {
+    display: flex;
+    justify-content: center;
+}
+button {
+    font: var(--font);
+    font-weight: bold;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    padding: 4px 8px;
+}

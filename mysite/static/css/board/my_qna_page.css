@@ -1,0 +1,4 @@
+/* 질문하기 버튼 안보이게하기  */
+#modify_btn, #answer_btn, div.questionbtn, input#questionbtnqna.button  {
+    display: none !important;
+}

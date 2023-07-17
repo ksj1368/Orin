@@ -1,0 +1,491 @@
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static 'img/favicon.ico' %}">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'css/board/qna_page.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/board/qna.js"></script>
+</head>
+<div>
+    <table class="qnatable">
+        <tr>
+            <th class="th1">no</th>
+            <th class="th2">카테고리</th>
+            <th class="th3">질문 제목</th>
+            <th class="th4">작성자</th>
+            <th class="th5">작성일자</th>
+        </tr>
+        {% for question in context.memo_list %}
+        <tr>
+            <td id = 'q_pk_{{question.pk}}'>{{ question.pk }}</td>
+            <td>{{ question.category }}</td>
+            <td><span onclick="" class="titlemodal" data-postpk="{{ question.pk }}">
+                <div id='postname'>{{ question.postname }}</div>
+            </span></td>
+            <td>{{ question.user }}</td>
+            <td>{{ question.created_at|date:"Y. m. d" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% if context.memo_list %}
+    <div class="pagenum">
+        <ul>
+            <!-- 이전 페이지 -->
+            {% if context.memo_list.has_previous %}
+            <li>
+                <!-- 1 페이지로이동 -->
+                <a href="?page=1"><img class="firstbtn" src="{%static 'img/icon_first.png'%}"></a>
+
+                <!-- 현재 페이지에서 -10 페이지 이동 -->
+                {% if context.memo_list.number|add:-10 >= 1 %}
+                <a href="?page={{ context.memo_list.number|add:-10 }}"><img class="prebtn" src="{%static 'img/icon_previous.png'%}"></a>
+                {% else %}
+                <a href="?page=1"><img class="prebtn" src="{%static 'img/icon_previous.png'%}"></a>
+                {% endif %}
+            </li>
+            {% else %}
+            <li>
+                <a tabindex="-1" aria-disabled="true" href="#"><img class="firstbtn" src="{%static 'img/icon_first.png'%}"></a>
+                <a tabindex="-1" aria-disabled="true" href="#"><img class="prebtn" src="{%static 'img/icon_previous.png'%}"></a>
+            </li></a>
+            </li>
+            {% endif %}
+            <!-- 페이지 리스트 -->
+            {% for page_number in context.memo_list.paginator.page_range %}
+            {% if  context.page_start_number <= page_number and context.page_end_number >= page_number%}
+                {% if page_number == context.memo_list.number %}
+                <li aria-current="page">
+                    <a class="page_number" href="?page={{ page_number }}">{{ page_number }}</a>
+                </li>
+                {% else %}
+                <li>
+                    <a class="page_number" href="?page={{ page_number }}">{{ page_number }}</a>
+                </li>
+                {% endif %} 
+            {% endif %}
+            {% endfor %}
+            <!-- 다음 페이지 -->
+            {% if context.memo_list.has_next %}
+            <li>
+                <!-- 현재 페이지에서 +10 페이지 이동 -->
+                {% if context.memo_list.number|add:10 <= context.last_page_num %}
+                    <a href="?page={{ context.memo_list.number|add:10 }}"><img class="nextbtn" src="{%static 'img/icon_next.png'%}"></a>
+                {% else %}
+                    <a href="?page={{ context.last_page_num }}"><img class="nextbtn" src="{%static 'img/icon_next.png'%}"></a>
+                {% endif %}
+                <!-- 마지막 페이지 이동 -->
+                <a href="?page={{ context.last_page_num }}"><img class="lastbtn" src="{%static 'img/icon_last.png'%}"></a>
+            </li></a>
+            </li>
+            {% else %}
+            <li>
+                <a tabindex="-1" aria-disabled="true" href="#"><img class="nextbtn" src="{%static 'img/icon_next.png'%}"></a>
+                <a tabindex="-1" aria-disabled="true" href="#"><img class="lastbtn" src="{%static 'img/icon_last.png'%}"></a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endif%}
+
+<div class="questionbtn">
+    <input  id="questionbtnqna" class="button" type="button" onclick="openModal()" value="문의하기">
+</div>
+
+<!-- 질문 출력 모달창 -->
+
+<div id="questionmodal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal2()">&times;</span>
+        <div id = 'qna_content'>
+            <h1 class="titlenameinquestionmodal">문의내역</h1>
+            <hr>
+            <div class="modal-content-container">
+                <!-- 내용이 많은 경우 스크롤이 생성될 컨테이너 -->
+                <div class="scroll-container">
+                    <div class="modalpostnamediv">
+                        <p class="postnamelabel">제목</p>
+                        <p id = "modalPostname"></p>
+                    </div>
+                    <div class="modaldatediv">
+                        <p class="datelabel">작성일자</p>
+                        <p id = "created_at"></p>
+                    </div>
+                    <div class="modaluserdiv">                    
+                        <p class="userlabel">아이디</p>
+                        <p id = "modalUser"></p>
+                    </div>
+
+                    <div class="modalcategorydiv">
+                        <p class="categorylabel">카테고리</p>
+                        <p id = "category"></p>
+                    </div>
+                    <div class="modalcontentsdiv" style = 'white-space:pre-wrap'>
+                        <p class="contentslabel">질문</p>
+                        <div class="questionmodalcontents">
+                            <p id = "contents"></p>
+                        </div>
+                    </div>
+                    <!-- 이미지-->
+                    <div id = "imageContainer"></div>
+                    <!-- 답변 출력 -->
+                    <div id="answerList"></div>
+                    <!-- 질문 작성자만 답변이 작성되지 않았을 경우 질문 수정 가능-->
+                </div>
+            </div>
+            <div class="questionFormbtn">
+                <span class = "modify_modal" id="modify_btn"></span>
+                <span id="answer_btn"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 문의 작성 모달창-->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <form id="questionForm" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        </form>
+    </div>
+</div>
+
+<script>
+    // 문의 생성 모달창을 여는 함수
+    function openModal() {
+        var modal = document.getElementById('myModal');
+        var modalContent = modal.querySelector('.modal-content');
+        
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    modalContent.innerHTML = xhr.responseText;
+                    modal.style.display = 'flex'
+                } else {
+                    console.error('Error loading create_question.html:', xhr.status);
+                }
+            }
+        };
+        xhr.open('GET', '{% url 'board:create_question' %}', true);
+        xhr.send();
+    }
+
+    // 문의 사항 모달창 닫기
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        location.reload(); // 페이지 리로드
+}
+    // 질문출력 모달창 닫기
+    function closeModal2() {
+        var modal = document.getElementById('questionmodal');
+        location.reload(); // 페이지 리로드
+    }
+
+    // 첨부 파일이 이미지 형식이 아닐 경우 경고 문구를 출력하는 함수
+    function validateFile() {
+        var fileInput = document.getElementById('image');
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.img|\.png|\.jpg|\.jpeg|\.webp)$/i;
+        var label = document.querySelector('label[for="image"]');
+        label.style.background = "linear-gradient(90deg, rgba(105,108,255,0.5) 0%, rgba(136,200,255,0.5) 100%)";
+        label.style.borderColor = 'var(--point_color)';
+        
+        if (!allowedExtensions.exec(filePath)) {
+            alert('이미지 파일을 선택해주세요.');
+            fileInput.value = '';
+            return false;
+        }
+    }
+
+    // 문의 내역을 저장하는 함수
+    function save_question(event) {
+        event.preventDefault();
+
+        var form = $("#save_question")[0];
+        var form_data = new FormData(form);
+
+        var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+        form_data.append("csrfmiddlewaretoken", csrfToken);
+            
+        var postname = $("input[name = 'postname']").val()
+        var category = $("input[name='category']:checked").val();
+        var contents = $("textarea[name = 'contents']").val()
+        var image = $("input[name = 'iamge']").val()
+        
+        if (postname == "") {
+            
+            alert("제목을 입력해 주세요")
+            return false;
+        } else if (!category) {
+            
+            alert("카테고리를 선택해 주세요")
+            return false;
+        }
+
+        form_data.append("image", $("#image")[0].files[0]);
+        form_data.append("postname", postname);
+        form_data.append("category", category);
+        form_data.append("contents", contents);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: 'create_question/',
+            data: form_data,
+            processData: false,
+            contentType: false,
+    
+            success: function (data) {
+                console.log("success")
+                $("#myModal").hide()
+                location.reload();
+            }, 
+            beforeSend: function () {
+                console.log("beforesend")
+            },
+            complete: function () {
+                console.log("complete")
+            },
+            error: function (e) {
+                console.log("error", e);
+            }
+        });
+         // 버튼 요소를 생성합니다.
+         var buttonElement = document.createElement('button');
+         buttonElement.innerText = '버튼';
+         // 버튼에 클릭 이벤트 리스너를 추가합니다.
+         buttonElement.addEventListener('click', function() {
+             // 버튼이 클릭되었을 때 수행할 동작을 정의합니다.
+             console.log('버튼이 클릭되었습니다.');
+         });
+         // 모달 창에 버튼을 추가합니다.
+         var modalContent = document.getElementById('modal_content');
+    }
+ 
+    // 문의 내역을 수정한 결과를 저장하는 함수
+    function modify_question(event) {
+        event.preventDefault();
+        var form = $("#save_question")[0];
+        var form_data = new FormData(form);
+        var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+        form_data.append("csrfmiddlewaretoken", csrfToken);
+        
+        var postname = $("input[name = 'postname']").val()
+        var category = $("input[name='category']:checked").val();
+        var contents = $("textarea[name = 'contents']").val()
+        var image = $("input[name = 'iamge']").val()
+        
+        if (postname == "") {
+            $('#postname').focus();
+            alert("제목을 입력해 주세요")
+            return false;
+        } else if (!category) {
+            $('#category').focus();
+            alert("카테고리를 선택해 주세요")
+            return false;
+        }
+
+        form_data.append("image", $("#image")[0].files[0]);
+        form_data.append("postname", postname);
+        form_data.append("category", category);
+        form_data.append("contents", contents);
+        
+        // 전송
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: 'modify_question/' + parseInt($("#pk").text()) + "/",
+            data: form_data,
+            processData: false,
+            contentType: false,
+            
+            success: function (data) {
+                console.log("success")
+                $("#myModal").hide()
+                location.reload();
+            }, 
+            beforeSend: function () {
+                console.log("beforesend")
+            },
+            complete: function () {
+                console.log("complete")
+            },
+            error: function (e) {
+                console.log("error", e);
+            }
+        });
+         // 버튼 요소를 생성합니다.
+         var buttonElement = document.createElement('button');
+         buttonElement.innerText = '버튼';
+         // 버튼에 클릭 이벤트 리스너를 추가합니다.
+         buttonElement.addEventListener('click', function() {
+             // 버튼이 클릭되었을 때 수행할 동작을 정의합니다.
+             console.log('버튼이 클릭되었습니다.');
+         });
+         // 모달 창에 버튼을 추가합니다.
+         var modalContent = document.getElementById('modal_content');
+    }
+</script>
+
+<script>
+    function htmlEntitiesToText(text) {
+        // 각 HTML 엔티티를 해당하는 문자로 바꿉니다.
+        text = text.replace(/&lt;/g, "<");
+        text = text.replace(/&gt;/g, ">");
+        text = text.replace(/&amp;/g, "&");
+        text = text.replace(/&quot;/g, '"');
+        text = text.replace(/&apos;/g, "'");
+        return text;
+    }
+    // 문의 제목을 클릭 하면 모달창을 출력 하는 함수
+    var modal = document.getElementById('questionmodal');
+    var isRequestInProgress = false;
+
+    $('.titlemodal').one("click", function(){
+        if (isRequestInProgress) {
+            return; // 이미 요청이 진행 중인 경우 함수를 종료하여 추가 요청 방지
+        }
+        
+        isRequestInProgress = true; // 요청 시작
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        
+        var pk = $(this).data('postpk'); // 클릭된 버튼의 data-postpk 값을 가져옴
+
+        // DB에서 문의 내역을 가져옴
+        $.ajax({
+            url: '/board/qna/'+ parseInt(pk) + "/",
+            dataType : "html",
+            type : 'GET',
+            success : function(data){              
+                var tempDiv = document.createElement('div');
+
+                // 문자열을 div의 innerHTML로 설정
+                tempDiv.innerHTML = data;
+
+                // 필요한 값을 추출하여 모달 창에 표시
+                var postname = htmlEntitiesToText(tempDiv.querySelector('#postname').innerHTML); // 질문 제목
+                var user = tempDiv.querySelector('#user').innerHTML; // 작성자
+                var category = tempDiv.querySelector('#category').innerHTML; // 카테고리
+                var contents = htmlEntitiesToText(tempDiv.querySelector('#contents').innerHTML); // 질문 내용
+                var createdAt = tempDiv.querySelector('#created_at').innerHTML; // 질문 작성 일자
+                
+                $('#modalPostname').text(postname);
+                $('#modalUser').text(user);
+                $('#category').text(category);
+                $('#contents').text(contents);
+                $('#created_at').text(createdAt);
+                
+                // 이미지 가져오기
+                var imageURL = tempDiv.querySelector('img') ? tempDiv.querySelector('img').getAttribute('src') : '';
+                
+                // 이미지를 표시할 html의 div 선택
+                var imageContainer = document.getElementById('imageContainer');
+        
+                // 이전 게시글의 이미지, 버튼 제거
+                imageContainer.innerHTML = '';
+                document.getElementById('modify_btn').innerHTML = '';
+                document.getElementById('answer_btn').innerHTML = '';
+
+                // 이미지가 있을 경우에 실행
+                if (imageURL) {
+                    // 이미지 태그 생성
+                    var imageElement = document.createElement('img');
+                    imageElement.setAttribute('src', imageURL);
+                    imageElement.setAttribute('alt', 'Image');
+                    imageElement.setAttribute('height', '300');
+                    imageElement.setAttribute('loading', 'lazy');
+                    
+                    // 이미지를 div에 추가
+                    imageContainer.appendChild(imageElement);
+                }
+                var answerListElement = tempDiv.querySelector('#answer_list');
+                var answerList = answerListElement.innerHTML;
+                
+                // 답변 목록을 모달 창에 추가
+                $('#answerList').html(answerList);
+
+                // 질문 작성자만 답변이 작성되지 않았을 경우 질문 수정 버튼 추가
+                var req_user_level = tempDiv.querySelector('#req_user_level').innerHTML; // 접속한 유저의 레벨
+                var req_user_name = tempDiv.querySelector('#req_user_name').innerHTML; // 접속한 유저의 이름
+
+                // 질문 수정 버튼, 답변이 없는 질문글에 한해서 작성자만 수정 가능
+                // board:qna_page의 비어있는 answerList의 길이가 26이라서 26으로 설정
+                if ($('#modalUser').text() === req_user_name && answerList.length === 26) { 
+                    var modifyButton = document.createElement('button');
+                    modifyButton.type = 'button';
+                    modifyButton.textContent = '질문 수정';
+                    modifyButton.addEventListener('click', openModifyModal(pk, postname, contents));
+                    document.querySelector('#modify_btn').appendChild(modifyButton);
+                }
+                
+                // 답변 버튼, admin만 답변 가능
+                if (req_user_level === '0') {
+                    var answerButton = document.createElement('button');
+                    answerButton.type = 'button';
+                    answerButton.textContent = '답변 달기';
+                    answerButton.addEventListener('click', function() {
+                        location.href = '/board/create_answer/' + pk + '/';
+                    });
+                    document.getElementById('answer_btn').appendChild(answerButton);
+                }
+                isRequestInProgress = false;
+            },
+            error : function(xhr,status,error){
+                isRequestInProgress = false;
+                alert(error);
+            }
+        });
+    });
+    
+    // 문의 내역 모달창을 출력하는 함수
+    function openModifyModal(pk, postname, contents, img) {
+
+        $('.modify_modal').click(function() {
+            $("#questionmodal").hide();
+
+            var modal = document.getElementById('myModal');
+            modal.style.display = 'flex'
+
+            var modifyURL = 'modify_question/' + parseInt(pk) + '/';
+            $.ajax({
+                url: modifyURL,
+                dataType: 'html',
+                type: 'GET',
+                success: function(data) {
+                    $('#modalPostname').text(postname);
+                    $('#modalUser').text(data.user);
+                    $('#category').text(data.category);
+                    $('#contents').text(contents);
+                    $('#created_at').text(data.createdAt);
+
+                    modal.style.display = 'flex'
+
+                },
+                error: function(xhr, status, error) {
+                    alert(error);
+                },
+            });
+
+            var modal = document.getElementById('myModal');
+            var modalContent = modal.querySelector('.modal-content');
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        modalContent.innerHTML = xhr.responseText;
+                        modal.style.display = 'flex'
+                    } else {
+                        console.error('Error loading modify_question.html:', xhr.status);
+                    }
+                }
+            };
+            xhr.open('GET', modifyURL, true);
+            xhr.send();
+        });
+    }
+</script>

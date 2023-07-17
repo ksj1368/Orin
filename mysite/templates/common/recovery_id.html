@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'css/common/recovery_id.css'%}">
+  <title>로그인 - 아이디찾기</title>
+</head>
+
+{% csrf_token %}
+
+<!-- 주요 기능 -->
+<div class="find_id">
+  <p id="title">아이디 찾기</p>
+  <!--이름-->
+  <div id="name">
+    <label name="label_name" for="{{ form_id.name.id_for_label }}" id="label_name"> {{ form_id.name.label }} </label>
+    {{ form_id.name|add_class:"text_name" }}
+  </div>
+  <!--이메일-->
+  <div class="email">
+    <label name="label_email" for="{{ form_id.email.id_for_label }}" id="label_email"> {{ form_id.email.label }} </label>
+    {{ form_id.email|add_class:"text_email" }}
+  </div>
+  <!-- 찾은 아이디 -->
+  <div id="result_id"></div>
+  <div id="button_area">
+    <!-- 아이디찾기 버튼 -->
+    <button id="button1" name="recovery_id">아이디찾기</button>
+    <!-- 로그인 페이지 이동 -->
+    <button id="button2" onclick="location.href='{% url 'common:login' %}';">로그인하기</button>
+  </div>
+  <!-- 비밀번호 찾기 -->
+  <div class="find_pw">
+    <span>비밀번호를 잊으셨나요?</span>
+    <a id="find_pw" href="{% url 'common:recovery_pw' %}">비밀번호찾기</a>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#button1").click(function () {
+      var name = $("#form_name").val();
+      var email = $("#form_email").val();
+
+      $.ajax({
+        type: "POST",
+        url: "/common/recovery/id/find/",
+        dataType: "json",
+        data: {
+          name: name,
+          email: email,
+          csrfmiddlewaretoken: "{{csrf_token}}",
+        },
+        success: function (response) {
+          $("#result_id").replaceWith(
+            '<div id="result_id"><div><span>** 입력된 정보로 가입된 아이디는 </span><span id="result_id">' + response.result_id + "</span><span> 입니다. **</span></div></div>"
+          );
+        },
+        error: function () {
+          if (name == "" || email == "") {
+            alert("이름와 이메일을 입력해주세요.");
+          } else {
+            alert("입력하신 정보가 일치하지 않거나 존재하지 않습니다.");
+          }
+        },
+      });
+    });
+  });
+</script>
+
+{% endblock %}

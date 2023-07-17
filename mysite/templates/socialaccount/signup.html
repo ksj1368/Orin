@@ -1,0 +1,41 @@
+{% extends "socialaccount/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href="{% static 'css/socialaccount/signup.css'%}">
+  <title>구글 회원가입</title>
+</head>
+
+<!-- 주요 기능 -->
+<div class="outerArea">
+  <h1 class="title">{% trans "Sign Up" %}</h1>
+
+  {% comment %} <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
+  {{site_name}}. As a final step, please complete the following form:{% endblocktrans %}</p> {% endcomment %}
+
+  <!-- 입력폼 -->
+  <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <p class="btn-p">
+      <button type="submit">등록 진행</button>
+    </p>
+  </form>
+  <script type = "text/javascript">
+    function maxLengthCheck(object){
+        if (object.value.length > object.maxLength) {
+            object.value = object.value.slice(0, object.maxLength);
+            }   
+    }
+  </script>
+</div>
+{% endblock %}

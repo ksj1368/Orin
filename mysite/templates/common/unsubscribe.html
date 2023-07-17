@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/common/unsubscribe.css'%}">
+    <title>구독해지</title>
+    <script>
+    function confirmSubscription() {
+        if (confirm("정말 구독 해지하시겠습니까?")) {
+            document.getElementById("unsubscribe-form").submit();
+        } else {
+            return false;
+        }
+    }
+    </script>
+</head>
+
+<!-- 구독해지 -->
+<form id="unsubscribe-form" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="user_id" value="{{ request.user.user_id }}">
+    <!-- 유료 -->
+    <div class="pay" onclick="return false;">
+        <p class="title">Pro</p>
+        <button type="button" id="button">3,900원/월</button>
+        <div class="content">
+            <p>✅ 자소서 문맥 교정 서비스</p>
+            <p>✅ 자소서 소제목 AI 생성 서비스</p>
+            <p>✅ 북마크 임시 저장 6개</p>
+            <p>✅ 자소서 저장 용량 무제한</p>
+            <p>✅ chatGPT로 자소서 초안 작성</p>
+        </div>
+    </div>
+    <!-- 구독해지 -->
+    <div class="unsubscribe" onclick="confirmSubscription()">
+        <p class="title">구독해지</p>
+        <p id="alert">구독을 해지하시면, <br> 다음과 같은 혜택을 받을 수 없습니다.😥</p>
+        <div class="content">
+            <p>❌ 북마크 임시 저장 6개</p>
+            <p>❌ 자소서 저장 용량 무제한</p>
+            <p>❌ chatGPT로 자소서 초안 작성</p>
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,181 @@
+/* 로그인 영역 */
+.login {
+    width: 35%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 페이지 제목 */
+.title {
+    font-size: 35px;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 50px;
+}
+/* 아이디 */
+.id {
+    width: 100%;
+    height: auto;
+}
+
+.label_user_id {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+
+.text_user_id {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    outline: none;
+}
+.text_user_id:hover, .text_user_id:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+
+.id_invalid {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    padding: 1px 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    outline: none;
+    position: relative;
+}
+.id_invalid:hover, .id_invalid:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+
+.id_invalid_feedback {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    color: red;
+    position: absolute;
+}
+/* 비밀번호 */
+.password {
+    width: 100%;
+    height: auto;
+    margin-top: 25px;
+}
+
+.label_password {
+    font-size: clamp(1rem, 1vw, 1.3rem);
+    font-weight: bold;
+}
+
+.text_password {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 17px;
+    outline: none;
+}
+.text_password:hover, .text_password:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+
+.password_invalid {
+    width: 100%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    padding: 1px 10px;
+    margin-top: 5px;
+    font-size: 17px;
+    outline: none;
+}
+.password_invalid:hover, .password_invalid:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+
+.password_invalid_feedback {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    color: red;
+}
+/* 로그인 유지 */
+.login_keep {
+    font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+    font-weight: bold;
+}
+/* 주요기능 버튼 */
+.login_find {
+    width: 70%;
+    text-align: center;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.login_menu {
+    font-size: clamp(0.4rem, 1.5vw, 0.8rem);
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+}
+
+.login_button {
+    text-align: center;
+    width: 100%;
+}
+.site_login {
+    width: 50%;
+    height: 35px;
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    font-family: "PretendardVariable.woff2";
+    color: #696cff;
+}
+.site_login:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px var(--line_color);
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+.google_login {
+    width: 50%;
+    height: 35px;
+    background: #FFFFFF;
+    border: 1px solid var(--line_color);
+    border-radius: 50px;
+    margin: 10px auto;
+    position: relative;
+}
+.google_login:hover {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+
+#google_logo {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 7px;
+    top: 7px;
+}
+
+#google_login {
+    line-height: 35px;
+    text-decoration: none;
+    font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    color: black;
+}

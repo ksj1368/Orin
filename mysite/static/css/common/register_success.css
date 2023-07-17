@@ -1,0 +1,31 @@
+@font-face {
+    font-family: "PretendardVariable.woff2";
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+html {
+    min-height: 100%;
+    min-width: 100%;
+    background: linear-gradient(172deg, rgba(209,212,222,1) 0%, rgba(255,255,255,1) 100%);
+}
+body {
+    min-height: 100%;
+    min-width: 100%;
+    height: auto;
+    margin: 0px;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content-box {
+    margin-top: 50px;
+    width: 60%;
+    background-color: #f5f5f5; /* 박스 배경색 */
+    border: 1px solid #ccc; /* 박스 테두리 스타일 */
+    padding: 10px; /* 박스 내부 여백 */
+}

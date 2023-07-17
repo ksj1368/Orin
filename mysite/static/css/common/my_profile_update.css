@@ -1,0 +1,119 @@
+/* 마이페이지 메뉴 */
+.button_area {
+    position: absolute;
+    top: 20%;
+    right: 25%;
+    z-index: 20;
+}
+#mypage_menu {
+    border: 0px;
+    background: none;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.5rem, 1.5vw, 0.9rem);
+    font-weight: bold;
+    cursor: pointer;
+}
+/* 주요 기능 영역 */
+form {
+    width: 80%;
+    height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* 페이지 제목 */
+#title {
+    font-size: clamp(1.2rem, 2.5vw, 3rem);
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    position: relative;
+    text-align: center;
+    right: 20%;
+}
+/* 내정보수정 */
+#table {
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+#name {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 15px;
+}
+#content {
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 0px;
+}
+/* 이름 수정 */
+#name_id {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 15px;
+}
+#content_id {
+    border-bottom: 1px solid var(--line_color);
+    padding: 0px;
+}
+.text_name {
+    width: 90%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    outline: none;
+    position: relative;
+}
+.text_name:hover, .text_name:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 핸드폰 번호 수정 */
+#name_hp {
+    text-align: right;
+    font-weight: bold;
+    border-bottom: 1px solid var(--line_color);
+    padding: 20px 15px 10px 15px;
+}
+#content_hp {
+    border-bottom: 1px solid var(--line_color);
+    padding: 0px;
+}
+.text_hp {
+    width: 90%;
+    height: 35px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    padding: 1px 10px;
+    font-family: "PretendardVariable.woff2";
+    font-size: clamp(0.8rem, 2vw, 1.1rem);
+    outline: none;
+    position: relative;
+}
+.text_hp:hover, .text_hp:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+/* 수정 버튼 */
+.update_button_area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#button {
+    width: 15%;
+    max-width: 120px;
+    height: 35px;
+    font-size: clamp(0.7rem, 1.5vw, 1rem);
+    text-decoration: none;
+    font-family: var(--font);
+}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/draft/result.css'%}">
+    <link rel="stylesheet" href="{% static 'css/correction/save.css'%}">
+
+    <script>
+        function htmlToText(text) {
+            // <br> 태그를 \n으로
+            text = text.replace(/<br>/g, "\n"); //g:전역검색(모두 찾아 바꿈)
+            //  em  태그 제거
+            text = text.replace(/<em[^>]*>|<\/em>/g, "");  
+            return text;
+          }
+          
+        function openNewWindow_chat() {
+            var textToCopy = htmlToText(document.getElementById('textToCopy_chat').innerText);
+
+            var newWindow = window.open('/correction/', '_blank');  // 새 창을 엽니다.
+
+            newWindow.addEventListener('load', function() {
+                newWindow.document.getElementById('jasoseo').value = textToCopy;  // 새 창의 textarea에 값을 넣습니다.
+            });
+        }
+        function openNewWindow_bard() {
+            var textToCopy = htmlToText(document.getElementById('textToCopy_bard').innerText);
+
+            var newWindow = window.open('/correction/', '_blank');  // 새 창을 엽니다.
+
+            newWindow.addEventListener('load', function() {
+                newWindow.document.getElementById('jasoseo').value = textToCopy;  // 새 창의 textarea에 값을 넣습니다.
+            });
+        }
+    </script>
+    <title>초안 생성</title>
+</head>
+ 
+<h1 class="titlename" style="margin: 10% 0 0 15%;">초안 생성</h1>
+<div class="container">
+    {% csrf_token %}
+    <div class="mid-content">
+        <div class='content-box1'>
+            <hr><br>
+            <p class="draftp">질문 :  {{ question }}</p>
+            <p class="draftp">회사 :  {{ office }}</p>
+            <p class="draftp">글자수 :  {{ num }}</p>    
+            <p class="draftp">직무 :  {{ position }}</p>
+            <p class="draftp">경험 1 :  {{ experience }}</p>
+            <p class="draftp">경험 2 :  {{ experience2 }}</p>
+            <p class="draftp">경험 3 :  {{ experience3 }}</p>
+        </div>
+    </div>
+    <div class="content-container">
+        <div class="gpt-content">
+            <div class="content-box2">
+                <h2><img class="gptlogo" src="{% static 'img/chatgpt_icon.png' %}">&nbsp; GPT가 생성한 자소서 초안</h2>
+                <p id="textToCopy_chat">{{ output_chat|safe }}</p>
+                <div class='link-container'>
+                    <button class="tomainservice" onclick="openNewWindow_chat()">교정 & 소제목 추천</button>
+                    <button type="button" class="saveButton" name="action" value="save">자기소개서 저장</button>
+                </div>
+            </div>
+        </div>
+        <div class="bard-content">
+            <div class="content-box3">
+                <h2><img class="bardlogo" src="{% static 'img/bard_icon.png' %}">&nbsp; BARD가 생성한 자소서 초안</h2>
+                <p id="textToCopy_bard">{{ output_bard|safe }}</p>
+                <div class='link-container'>
+                    <button class="tomainservice" onclick="openNewWindow_bard()">교정 & 소제목 추천</button>
+                    <button type="button" class="saveButton" name="action" value="save">자기소개서 저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="return">
+        <button class="button" onclick="window.location.href='{% url 'draft:createdraft' %}'">새로운 초안생성</button>
+    </div>
+</div>
+
+
+<!--자소서 저장 모달창-->
+<div id="modal" class="modal">
+    <div id="modal_content">
+        <p>자기소개서 저장</p>
+        <div id="inputs">
+            <label for="fname">제목</label> &nbsp;&nbsp;
+            <input type = "text" id = 'titleInput' name = "title">
+        </div>
+        <div id="category">
+            <label for="cname">카테고리</label> &nbsp;&nbsp;
+            <select name = 'categoryInput' id = 'categoryInput'></select> &nbsp;
+            <input type="button" id="add_category" hidden>
+            <label for="add_category" onclick>
+                <ion-icon name="add-circle-outline" id="addCategoryButton"></ion-icon>
+            </label>
+        </div>
+        <div id="check">
+            <button type="button" id="save_okBtn">확인</button> &nbsp;&nbsp;&nbsp;
+            <button type="button" id="save_closeBtn">취소</button>
+        </div>
+    </div>
+</div>
+<script>
+    function htmlEntitiesToText(text) {
+        // 각 HTML 엔티티를 해당하는 문자로 바꿉니다.
+        text = text.replace(/&lt;/g, "<");
+        text = text.replace(/&gt;/g, ">");
+        text = text.replace(/&amp;/g, "&");
+        text = text.replace(/&quot;/g, '"');
+        text = text.replace(/&apos;/g, "'");
+        return text;
+    }
+
+    var csrfToken = "{{ csrf_token }}"; //각 POST 요청에 CSRF 토큰 함께 전송해야
+    const modal = document.getElementById('modal');
+
+    $(document).ready(function() {
+    
+        var content;
+
+        //저장 버튼 누르면 -> 모달 창 생성, 유저의 카테고리 받아옴
+        $('.saveButton').click(function(){
+            var parentBox = $(this).closest('.content-box2, .content-box3');
+            content = htmlToText(parentBox.find('p').html());
+            window.scroll({top: 0}); // 스크롤 맨 위로
+            $('body').css('overflow-y', 'hidden'); // 스크롤 막기
+            modal.style.visibility = 'visible';
+            modal.style.opacity = '1';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            $('#titleInput').val('');  // 입력창의 값을 빈 문자열로 설정
+            var select = $("#categoryInput");
+            select.empty();
+            select.append('<option value="">선택 없음</option>');
+            $.ajax({
+                url: '/correction/correct/categories/',
+                type : 'GET',
+                success : function(data){
+                    console.log(data);
+                    data['categories'].forEach(function(categoryName){
+                        var option = $('<option>', {value : categoryName, text : categoryName});    //카테고리option
+                        select.append(option);
+                    });
+                }
+            });
+        });
+
+        //모달창에서 확인클릭 -> mypage에 최종 저장 됨
+        $('#save_okBtn').click(function(){
+            save(content);
+            $('body').css('overflow-y','unset'); // 스크롤 막기 풀기
+        });
+
+        //mypage 저장 모달창에서 카테고리 추가하기 버튼 구현
+        $('#addCategoryButton').click(addCategory);
+
+
+        //모달창에서 취소버튼 클릭 -> 모달창 닫기
+        $('#save_closeBtn').click(function(){
+            closeModal();
+            $('body').css('overflow-y','unset'); // 스크롤 막기 풀기
+        });
+    });
+</script>
+<script>
+    // output_bard 변수의 값을 가져와서 확인합니다.
+    var output_bard_content = "{{ output_bard|safe }}";
+
+    // 특정 문자열을 확인하여 버튼을 숨깁니다.
+    if (output_bard_content === "Bard Key가 만료되었습니다. 문의 바랍니다.") {
+        // 버튼 요소를 가져옵니다.
+        var tomainServiceButton = document.querySelector("body > div.container > div.content-container > div.bard-content > div > div > button.tomainservice");
+        var saveButton = document.querySelector("body > div.container > div.content-container > div.bard-content > div > div > button.saveButton");
+
+        // 버튼을 숨깁니다.
+        tomainServiceButton.style.display = "none";
+        saveButton.style.display = "none";
+    }
+</script>
+<script type="text/javascript" src="{%static 'js/save_modal.js'%}"></script>
+{% endblock %}
+

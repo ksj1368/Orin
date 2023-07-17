@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>자소서</title>
+    </head>
+    <body>
+        <div>
+        <p id="pk" style="display: none;">{{ my_jasoseo_detail.pk }}</p>    
+        <p id="category_id" style="display: none;">{{ my_jasoseo_detail.category_id }}</p>
+        <p>카테고리</p>
+        <p id="category_name" style="display: none;">{{ category_name }}</p>
+        <p>제목</p>
+        <p id = "title">{{my_jasoseo_detail.title}}</p>
+        <p>작성일자</p>
+        <p id = "created_at">{{my_jasoseo_detail.created_at|date:"Y. m. d. H:i"}}</p>
+        <p>내용</p>
+        <p id = "content">{{my_jasoseo_detail.content}}</p>
+        <a href = '/correction/my_manage/{{my_jasoseo_detail.pk}}/delete/'><button>삭제</button></a>
+        </div>
+    </body>
+</html>

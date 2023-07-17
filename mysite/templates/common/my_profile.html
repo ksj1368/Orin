@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/common/my_profile.css'%}">
+    <title>마이페이지 - 내정보확인</title>
+</head>
+
+<!-- 마이페이지 메뉴 -->
+<div class="button_area">
+    <input type="button" onclick = "location.href = '{% url 'board:my_qna' %}'" value = '내 문의내역' id="mypage_menu"></input>
+    <input type="button" onclick = "location.href = '{% url 'common:my_profile' %}'" value = '내 정보' id="mypage_menu"></input>
+</div>
+
+<!-- 주요기능 -->
+<div class="profile">
+    <!-- 타이틀 -->
+    <p id="title">내 정보 확인</p>
+    <!-- 내 정보 -->
+    <table id="table">
+        <tr>
+            <td id="name">이름 </td>
+            <td id="content">&nbsp;{{ user.name }}</td>
+        </tr>
+        <tr>
+            <td id="name">이메일 </td>
+            <td id="content">&nbsp;{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td id="name">비밀번호 </td>
+            <td id="content">&nbsp;▒▒▒▒▒▒▒▒</td>
+        </tr>
+        <tr>
+            <td id="name">아이디 </td>
+            {% if user.level == '0'%}
+            <td id="content">&nbsp;{{ user.user_id }}(개발자)</td>
+            {% elif user.level == '1' %}
+            <td id="content">&nbsp;{{ user.user_id }}(관리자)</td>
+            {% else %}
+            <td id="content">&nbsp;{{ user.user_id }}</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <td id="name">휴대폰 번호 </td>
+            <td id="content">&nbsp;{{ user.hp }}</td>
+        </tr>
+        <tr>
+            <td id="name">구독상태 </td>
+            {% if user.subscribe == '0' %}
+            <td id="content">&nbsp;무료 회원</td>
+            {% elif user.subscribe == '1' %}
+            <td id="content">&nbsp;구독자 &nbsp;&nbsp; {{ user.subscribe_joined }}</td>
+            {% endif %}
+        </tr>
+    </table>
+
+    <!-- 내정보 수정 -->
+    <div class="info_button">
+        <input type="button" onclick = "location.href= '{% url 'common:my_profile_update' %}'" value = '내정보수정' id="info_button"></input>
+        &nbsp;&nbsp;&nbsp;
+        {% if user.is_authenticated and user.socialaccount_set.all.0.provider == "google" %}
+        <div style="display: none;"></div>
+        {% else %}
+        <input type="button" value = '회원탈퇴' id="delete_button"></input>
+        {% endif %}
+        &nbsp;&nbsp;&nbsp;
+        {% if user.subscribe == '0' %}
+        <input type="button" onclick = "location.href = '{% url 'common:my_profile_subscribe' %}'" value = '구독하기' id="subscription_button"></input>
+        {% elif user.subscribe == '1' %}
+        <input type="button" onclick = "location.href = '{% url 'common:my_profile_unsubscribe' %}'" value = '구독해지' id="subscription_button"></input>
+        {% endif %}
+    </div>
+</div>
+
+<!-- 회원 탈퇴 -->
+<div id="modal">
+    <form method="POST" novalidate id="modal_content">
+        {% csrf_token %}
+        <h2>회원탈퇴</h2>
+        <span id="close_button"> &times; </span>
+        <span id="delete_comment"><strong>{{ user.user_id }}</strong> 회원님의 계정이 삭제됩니다. <br> 탈퇴시 개인정보 및 이용정보가 <span id="alert">삭제</span>되며 복구할 수 없습니다.</span>
+        <div id="pw_auth">
+            <small>본인인증을 위해 비밀번호를 입력해주세요.</small><br>
+            <label name="label_password" for="{{ password_form.password.id_for_label }}" id="label_pw">{{ password_form.password.label }}</label>
+            {{ password_form.password|add_class:"text_pw" }}
+            {% if password_form.password.errors %}
+            <script type="text/javascript">
+                document.getElementsByName('password')[0].setAttribute('class', 'form-control is-invalid')
+            </script>
+            {% for error in password_form.password.errors %}
+            <span class="invalid-feedback">
+                <br>{{ error }}
+            </span>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div id="button_area">
+            <label><input type="checkbox" name="ck" onClick="checkDisable(this.form)">유의사항 동의</label> &nbsp;&nbsp;
+            <button type="submit" name="bt" disabled="true" id="submit_button">탈퇴하기</button>
+        </div>
+    </form>
+</div>
+    
+<script type="text/javascript">
+    function checkDisable(form) {
+        if (form.ck.checked == true) {
+            form.bt.disabled = false;
+        } else {
+            form.bt.disabled = true;
+        }
+    }
+</script>
+<script type="text/javascript" src="/static/js/common/my_profile.js"></script>
+{% endblock %}

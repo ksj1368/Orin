@@ -1,0 +1,224 @@
+body.modal-open {
+    overflow: hidden;
+}
+/* 문의하기페이지 */
+hr {
+    background: var(--point_color);
+    height:1px;
+    border:0;
+    width: 95%;
+}
+.titlenameinmodal{
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    left: 3% !important;
+    margin: 1.5%;
+}
+.titlenameinquestionmodal {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 28px;
+    position: relative !important;
+    left: 3% !important;
+    margin-bottom: 1.5%;
+}
+
+div.postname {
+    text-align: center;
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+label[for="postname"] {
+    color: var(--point_color);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 200;
+    padding: 1%;
+}
+input#postname {
+    width: 80%;
+    height: 35px;
+}
+.contents {
+    text-align: center;
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+  
+label[for="contents"] {
+    color: var(--point_color);
+    font-size: 18px;
+    font-weight: 200;
+    padding: 1%;
+}
+  
+textarea {
+    width: 80%;
+    height: 200px;
+    border: 1px solid var(--line_color);
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+    resize: none;
+}
+
+[type="radio"] {
+    vertical-align: middle;
+}
+.file {
+    text-align: center;
+    margin: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+.filebox {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--point_color);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 200;
+    padding: 1%;
+}
+label[for = 'image'] {
+    display: inline-block;
+    cursor: pointer;
+    width: 80%;
+    height: 35px;
+    background: white;
+    border: 1px solid var(--line_color);
+    color: rgb(103, 103, 103);
+    border-radius: 5px;
+    padding: 1px 10px;
+    font-size: 13px;
+    position: relative;
+    left: 0.18%;
+}
+p#fileinput {
+    cursor: pointer;
+    margin: 0px !important;
+    position: relative;
+    top: 25%;
+    padding: 1px !important;
+}
+
+.file input[type="file"] {
+    cursor: pointer;
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+::placeholder {
+    font-size: 12px; /* 원하는 글자 크기로 설정 */
+}
+
+.submitbutton {
+    text-align: center;
+}
+#submitbutton {
+    width: 150px;
+    height: 35px;
+    font-family: "PretendardVariable.woff2";
+    font-size: 17px;
+    font-weight: 400;
+}
+textarea:hover, textarea:focus, input#postname:hover, input#postname:focus {
+    box-shadow: 0px 0px 7px var(--line_color);
+}
+div.category {
+    margin: 2% 6%;
+}
+input[type=radio] {
+    display: none;
+}
+
+input[type=radio]+label {
+    display: inline-block;
+    cursor: pointer;
+    height: 35px;
+    width: 130px;
+    border: 1px solid #333;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 200;
+    font-size: 15px;
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-weight: 200;
+}
+
+input[type=radio]:checked+label {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    color: white;
+}
+.close {
+    border: none !important;
+    color: black !important;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+.close:hover {
+    background-color: none !important;
+    border: none !important;
+    color: black !important;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+button.close {
+    position: absolute !important;
+    top: 10px !important;
+    right: 20px !important;
+    font-size: 30px !important;
+    cursor: pointer !important;
+    background: none !important;
+    border: 0px !important;
+    border-radius: 0 !important;
+    color: black !important;
+    font-weight: normal !important;
+}
+button.close:hover {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 30px;
+      box-shadow: none !important;
+      background: none !important;
+      color: black !important;
+}
+label p {
+    margin: 0px !important;
+    padding: 3px !important;
+}
+input[type=radio]:checked+label p{
+    margin: 0px !important;
+    padding: 3px !important;
+}
+.postname input, .contents textarea {
+    padding: 1px 10px;
+    font-family: var(--font);
+    letter-spacing: 1.5px;
+    line-height: 190%;
+    word-break: keep-all;
+}

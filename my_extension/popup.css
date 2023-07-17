@@ -1,0 +1,44 @@
+button, .button, #button {
+    background: white;
+    border: 1px solid #696cff;
+    border-radius: 50px;
+    color: #696cff;
+    font-weight: bold;
+}
+button:hover, .button:hover, #button:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 7px #CFCDCD;
+    background: linear-gradient(90deg, rgba(105,108,255,1) 0%, rgba(136,200,255,1) 100%);
+    border: none;
+    color: white;
+}
+
+.logo {
+    background: white !important; 
+    border: 1px solid white !important;
+    box-shadow: 0px 0px 7px white !important;
+    text-align: center;
+}
+
+textarea {
+    width: 350px;
+    height: 100px;
+    border: none;
+    resize: none;
+  }
+.green_text {
+    color: red;
+    font-weight: bold;
+}
+.red_text{
+    color: red;
+    font-weight: bold;
+}
+.violet_text{
+    color: red;
+    font-weight: bold;
+}
+.blue_text{
+    color: red;
+    font-weight: bold;
+}

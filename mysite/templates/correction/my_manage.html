@@ -1,0 +1,620 @@
+{% extends "base.html" %}
+{% block content %}
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+  <link href="{% static 'css/correction/my_manage.css' %}" rel="stylesheet">
+  <title>자기소개서 관리</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <h1 class="titlenamemymanage">자기소개서 관리</h1>
+  <div class="jasoseodiv">
+    <div class="category-list">
+      <div class="categorybtnarea">
+        <!-- 카테고리 추가 버튼-->
+        <label for="add_categorybtn" onclick>
+          <img id="add_categorybtn" src="{% static 'img/icon_addcat.png'%}">
+        </label>
+        <!-- 카테고리 삭제 버튼-->
+        <label for="delete_categorybtn" onclick>
+          <img id="delete_categorybtn" src="{% static 'img/icon_deletecat.png'%}">
+        </label>
+      </div>
+      <!-- 자기소개서 카테고리 리스트-->
+      <!-- 스크롤 생성 -->
+      <div class="scroll-container">
+        {% for category in my_category_list %}
+        <ul class="category-linkul">
+          <li class="category-link" data-category="{{ category.id }}">
+            <img class="categoryimg" src="{% static 'img/folder_point.png' %}" height="15px"
+              style="padding: 0 8px 2px 10px;">
+            <span class="category-name">{{ category.category_name }}</span>
+          </li>
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- 저장한 자소서 목록 -->
+    <div class="contents-list">
+      <div class="emptydiv">
+        <label onclick = "openModal()">
+          <img id="add_jasoseobtn" src="{% static 'img/icon_addj.png'%}">
+        </label>
+      </div>
+      <div class="jasoseotbdiv">
+        <ul id="post-list">
+          <table class="jasoseotb">
+            {% for my_jasoseo in context %}
+            <tr data-category="{{ my_jasoseo.category_id }}">
+              <!-- 제목 -->
+              <td class="titletd" >
+                <div class="titlemodaldiv">
+                  <span class="titlemodal" data-postpk="{{ my_jasoseo.pk }}">{{ my_jasoseo.title}}</span>
+                </div>
+              </td>
+              <!-- 저장 일자 -->
+              <td class="datetd">{{ my_jasoseo.created_at|date:"Y. m. d" }}</td>
+              <!-- 자소서 삭제 버튼-->
+              <td class="deletetd"><a href='/correction/my_manage/{{my_jasoseo.pk}}/delete/'
+                  onclick="return confirm('삭제하시겠습니까?')"><img class="deleteimg" src="{% static 'img/icon_delete.png' %}"></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </table>
+        </ul>
+      </div>
+    </div>
+</body>
+
+</html>
+<!-- 자소서 내용 출력 모달 -->
+<div id="my_j_detail_Modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="close_j_detail_Modal()">&times;</span>
+    <!-- docs 다운로드 -->
+    <input type="button" id="download" hidden>
+    <div id="my_j_detail_content">
+      <div class="modal-content-container">
+        <!-- 스크롤 생성 -->
+        <div class="jscroll-container">
+          <div class="jmodalcat">
+            <p class="jmodalcatlabel">카테고리</p>
+            <p id="category_name"></p>
+          </div>
+          <div class="jmodaltitle">
+            <p class="jmodaltitlelabel">제목</p>
+            <p id="title"></p>
+          </div>
+          <div class="jmodaldate">
+            <p class="jmodaldatelabel">작성일자</p>
+            <p id="created_at"></p>
+          </div>
+          <div class="jmodalcontent">
+            <p class="jmodalcontentlabel">내용</p>
+            <p id="content"></p>
+          </div>
+        </div>
+      </div>
+      <div class="questionFormbtn">
+        <!--자소서 수정 버튼-->
+        <span class="modify_modal" id="modify_btn"></span>
+        <!-- 교정하기 페이지로 이동-->
+        <label>
+          <button id="correctbtn" onclick="openNewWindow_jasoseo()">교정하기</button>
+        </label>
+        <!-- docs 다운로드 버튼 -->
+        <label for="download" onclick>
+          <button id='downloadButton'>다운로드</button>
+        </label>
+        <span id="delete_btn"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 자소서 수정 모달창-->
+<div id="myModal" class=" modal">
+  <div class="modal-content">
+    <form id="questionForm" method="POST" enctype="multipart/form-data">
+
+      {% csrf_token %}
+    </form>
+  </div>
+</div>
+
+<!-- 자소서 추가 모달창-->
+<div id="add_j_Modal" class="modal">
+  <div class="modal-content-add-j">
+    <form id="questionForm" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+    </form>
+  </div>
+</div>
+
+<!-- 카테고리 삭제 모달창-->
+<div id="delete_category_modal" class="modal">
+  <div class="modal-content-deletecat">
+    <form id="delete_category_form" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p class="modaldeletecattitlename">카테고리 삭제</p>
+      <div class="category_selectdiv">
+        <span class="close" onclick="close_delete_category_Modal()">&times;</span>
+        <select id="category_select" name="category_select">
+          {% for category in my_category_list %}
+          <option value="{{ category.id }}">{{ category.category_name }}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <input class="button" type="submit" value="카테고리 삭제">
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // 자소서 추가 모달창 열기
+  function openModal() {
+    var modal = document.getElementById('add_j_Modal');
+    var modalContent = modal.querySelector('.modal-content-add-j');
+    
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                modalContent.innerHTML = xhr.responseText;
+                var categorySelect = document.getElementById('categorySelect');
+                var optionsCount = categorySelect.options.length;
+                if (optionsCount == '0'){
+                  alert("생성된 카테고리가 없습니다. 카테고리를 생성하고 자기소개서를 추가해 주세요.");
+                  return ;
+                }
+                modal.style.display = 'block';
+            } else {
+                console.error('Error loading create_jasoseo.html:', xhr.status);
+            }
+        }
+    };
+    
+    xhr.open('GET', '{% url 'correction:create_jasoseo' %}', true);
+    xhr.send();
+    }
+    
+    function htmlEntitiesToText(text) {
+        // 각 HTML 엔티티를 해당하는 문자로 변경
+        text = text.replace(/&lt;/g, "<");
+        text = text.replace(/&gt;/g, ">");
+        text = text.replace(/&amp;/g, "&");
+        text = text.replace(/&quot;/g, '"');
+        text = text.replace(/&apos;/g, "'");
+        return text;
+    }
+    
+  // 자기소개서 모달창 닫기
+  function close_j_detail_Modal() {
+    var modal = document.getElementById('my_j_detail_Modal');
+    modal.style.display = 'none';
+    return;
+  }
+
+  // 자소서 수정 모달창 닫기
+  function close_j_modify_Modal() {
+    var modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+  }
+
+  // 자소서 추가 모달창 닫기
+  function close_j_create_Modal() {
+    var modal = document.getElementById('add_j_Modal');
+    modal.style.display = 'none';
+  }
+  // 카테고리 삭제 모달창 닫기
+  function close_delete_category_Modal() {
+    var modal = document.getElementById('delete_category_modal');
+    modal.style.display = 'none';
+  }
+
+  // 선택한 카테고리의 자소서만 출력하는 함수
+  $(document).ready(function () {
+    // 변수 선언
+    let isRequestInProgress = false;
+    let selectedPostPk = null;
+  
+    // 카테고리 클릭 이벤트
+    $('.category-link, .category-link li').click(function () {
+      $('.category-link').removeClass('active');
+      $(this).addClass('active');
+  
+      // 선택한 카테고리
+      var selectedCategory = $(this).data('category');
+      if (selectedCategory) {
+        // 선택한 카테고리 이외의 게시글 숨기기
+        $('#post-list tr').hide();
+        $('#post-list tr[data-category="' + selectedCategory + '"]').show();
+      }
+    });
+  
+    // 자기소개서 제목 클릭 시 모달창 띄우기
+    $('.titlemodal').click(function () {
+      let modal = document.getElementById('my_j_detail_Modal');
+  
+      if (isRequestInProgress) {
+        return;
+      }
+  
+      isRequestInProgress = true;
+      modal.style.display = 'block';
+      modal.style.justifyContent = 'center';
+      modal.style.alignItems = 'center';
+      let pk = $(this).data('postpk');
+      selectedPostPk = pk;
+  
+      $.ajax({
+        url: parseInt(pk) + "/",
+        dataType: "html",
+        type: 'GET',
+        success: function (data) {
+          var tempDiv = document.createElement('div');
+          tempDiv.innerHTML = data;
+  
+          // 카테고리
+          var category_name = htmlEntitiesToText(tempDiv.querySelector('#category_name').innerHTML);
+  
+          // 제목
+          var title = htmlEntitiesToText(tempDiv.querySelector('#title').innerHTML);
+  
+          // 내용
+          var content = htmlEntitiesToText(tempDiv.querySelector('#content').innerHTML);
+  
+          // 작성일자
+          var createdAt = tempDiv.querySelector('#created_at').innerHTML;
+  
+          $('#category_name').text(category_name);
+          $('#title').text(title);
+          $('#content').html(content);
+          $('#created_at').text(createdAt);
+  
+          // 자기소개서 삭제 버튼
+          var deleteButton = document.createElement('button');
+          deleteButton.type = 'button';
+          deleteButton.textContent = '삭제하기';
+          deleteButton.addEventListener('click', function () {
+            if (confirm('삭제하시겠습니까?')) {
+              location.href = '/correction/my_manage/' + selectedPostPk + '/delete/';
+            } else {
+              console.log('삭제가 취소되었습니다.');
+            }
+          });
+          document.getElementById('delete_btn').innerHTML = '';
+          document.getElementById('delete_btn').appendChild(deleteButton);
+  
+          // 자기소개서 수정 버튼
+          var modifyButton = document.createElement('button');
+          modifyButton.type = 'button';
+          modifyButton.textContent = '수정하기';
+          modifyButton.addEventListener('click', function () {
+            if (isRequestInProgress) {
+              return;
+            }
+            isRequestInProgress = true;
+           
+              $("#my_j_detail_Modal").hide();
+  
+              var modal = document.getElementById('myModal');
+              var modifyURL = parseInt(selectedPostPk) + '/modify/';
+              $.ajax({
+                url: modifyURL,
+                dataType: 'html',
+                type: 'GET',
+                success: function (data) {
+                  $('#title').text(title);
+                  $('#content').text(content);
+  
+                  var modalContent = modal.querySelector('.modal-content');
+  
+                  var xhr = new XMLHttpRequest();
+                  xhr.onreadystatechange = function () {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                      if (xhr.status === 200) {
+                        modalContent.innerHTML = xhr.responseText;
+                        modal.style.display = 'block';
+                      } else {
+                        console.error('Error loading modify_jasoseo.html:', xhr.status);
+                      }
+                      isRequestInProgress = false;
+                    }
+                  };
+                  xhr.open('GET', modifyURL, true);
+                  xhr.send();
+                },
+                error: function (xhr, status, error) {
+                  isRequestInProgress = false;
+                  alert(error);
+                }
+              });
+            });
+            
+          document.getElementById('modify_btn').innerHTML = '';
+          document.getElementById('modify_btn').appendChild(modifyButton);
+  
+          isRequestInProgress = false;
+        },
+        error: function (xhr, status, error) {
+          isRequestInProgress = false;
+          alert(error);
+        }
+      });
+    });
+  });
+</script>
+<script>
+  // 자소서 수정
+  function modify_jasoseo(event) {
+    event.preventDefault();
+
+    var form = $("#modify_jasoseo")[0];
+    var form_data = new FormData(form);
+    var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+    form_data.append("csrfmiddlewaretoken", csrfToken);
+
+    var title = $("input[name = 'title']").val()
+    var category = $("option[name='category']:selected").val();
+    var content = $("textarea[name = 'content']").val();
+    
+    if (title == "") {
+      $('#title').focus();
+      alert("제목을 입력해 주세요")
+      return false;
+    } else if (!category) {
+      $('#category').focus();
+      alert("카테고리를 선택해 주세요")
+      return false;
+    }
+
+    form_data.append("title", title);
+    form_data.append("category", category);
+    form_data.append("content", htmlEntitiesToText(content));
+
+    $.ajax({
+      type: "POST",
+      enctype: 'multipart/form-data',
+      url: parseInt($("#pk").text()) + '/modify/',
+      data: form_data,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+
+        console.log("success")
+        $("#myModal").hide()
+        location.reload();
+      },
+      beforeSend: function () {
+        console.log("beforesend")
+      },
+      complete: function () {
+        console.log("complete")
+      },
+      error: function (e) {
+        console.log("error", e);
+      }
+    });
+  }
+
+  var csrfToken = "{{ csrf_token }}";
+  // 카테고리 추가 기능
+  $(document).ready(function () {
+    $("#add_categorybtn").click(function () {
+      var exists = false;
+      var new_category = prompt("추가할 카테고리 이름을 입력해주세요.");
+
+      if (new_category === null) {
+        // 취소 누르면
+        return;
+      } else if (new_category.trim().length === 0) {
+        // 한 글자 이상 누르지 않으면
+        alert("한 글자 이상 입력해주세요");
+        return;
+      }
+
+      // 이미 존재하는 카테고리라면
+      var exists = false;
+      // 카테고리 중복 확인
+      $(".category-link").each(function () {
+        var categoryName = $(this).text();
+        
+        if (categoryName.trim() === new_category) {
+          alert('이미 존재하는 카테고리입니다.');
+          exists = true;
+          return false;
+        }
+      });
+
+      if (exists) {
+        return; // 중복된 카테고리이므로 추가하지 않음
+      }
+
+      // 새로운 카테고리 저장 및 띄우기
+      $.ajax({
+        url: '/correction/correct/categories/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          category_name: new_category
+        }),
+        headers: {
+          'X-CSRFToken': csrfToken
+        },
+        success: function (data) {
+          // 성공적으로 카테고리 생성함
+          var option = $('<option>', {
+            value: data.category_name,
+            text: data.category_name
+          });
+          $("#my_category_list").append(option);
+          alert("카테고리 추가에 성공했습니다.");
+          location.reload(); // 페이지 새로고침
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("카테고리 추가에 실패했습니다. 다시 시도해주세요.");
+        }
+      });
+    });
+  });
+
+  // 카테고리 삭제 기능
+  $(document).ready(function () {
+    var selectedCategoryID; // 변수를 함수의 바깥으로 이동하여 선언
+
+    // 카테고리 삭제 모달 열기
+    $("#delete_categorybtn").click(function () {
+      var modal = document.getElementById("delete_category_modal");
+      modal.style.display = "flex";
+      modal.style.justifyContent = "center";
+      modal.style.alignItems = "center";
+    });
+
+    $("select[name=category_select]").change(function () {
+      selectedCategoryID = $(this).val();
+      var selectedCategoryName = $("select[name=category_select] option:selected").text();
+
+    });
+
+    // 카테고리 삭제 버튼 클릭
+    $("#delete_category_form").submit(function (event) {
+      event.preventDefault();
+
+      if (confirm("정말로 선택한 카테고리를 삭제하시겠습니까?")) {
+        // 삭제 요청을 서버에 보내는 AJAX 호출
+        $.ajax({
+          url: "/correction/category/delete/" + selectedCategoryID + "/",
+          type: "POST",
+          data: {
+            category_id: selectedCategoryID
+          },
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          success: function (data) {
+            alert("카테고리가 삭제되었습니다.");
+            location.reload(); // 페이지 새로고침
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert("카테고리 삭제에 실패했습니다.(첫 번째 카테고리는 삭제하실 수 없습니다.) 다시 시도해주세요.");
+          }
+        });
+      }
+    });
+  });
+
+  // 자기소개서 docs 다운로드 기능
+  document.getElementById('downloadButton').addEventListener('click', function () {
+    var text = document.getElementById('content').innerText; //다운로드 받을 자소서의 내용
+
+    // form을 생성하여 서버에 POST 요청을 보냄
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/correction/download/';
+
+    // CSRF 토큰을 추가
+    var csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+
+    //  hidden input 필드 추가
+    var hiddenInput = document.createElement('input');
+    hiddenInput.type = 'hidden';
+    hiddenInput.name = 'text';
+    hiddenInput.value = text;
+
+    // hidden input 필드를 form에 추가하고, form을 document body에 추가
+    form.appendChild(hiddenInput);
+    document.body.appendChild(form);
+
+    // form 제출(서버에 POST 요청 보냄)
+    form.submit();
+
+    // form을 document body에서 제거
+    document.body.removeChild(form);
+  });
+</script>
+
+<script>
+  // 자소서 모달창에서 교정하기 페이지로 넘기는 함수
+  function openNewWindow_jasoseo() {
+    
+    var textToCopy = document.getElementById('content').innerText;
+
+    var newWindow = window.open('/correction/', '_blank');  // 새 창을 엽니다.
+
+    newWindow.addEventListener('load', function () {
+      newWindow.document.getElementById('jasoseo').value = textToCopy;  // 새 창의 textarea에 값을 넣습니다.
+    });
+  }
+</script>
+<script>
+  // 자소서 추가 기능
+  function save_jasoseo(event){
+    event.preventDefault();
+    console.log("open");
+    var form = $("#modify_jasoseo")[0];
+  
+    var form_data = new FormData(form);
+    var csrfToken = $("input[name='csrfmiddlewaretoken']").val();
+    form_data.append("csrfmiddlewaretoken", csrfToken);
+
+    var title = $("input[name = 'title']").val()
+    var category = $("option[name='category']:selected").val();
+    var content = $("textarea[name = 'content']").val()
+
+    // 제목, 카테고리가 없을 경우 경고문구 출력
+    if (title == "") {
+      $('#title').focus();
+      alert("제목을 입력해 주세요")
+      return false;
+    } else if (!category) {
+      $('#category').focus();
+      alert("카테고리를 선택해 주세요")
+      return false;
+    }
+
+    form_data.append("title", title);
+    form_data.append("category", category);
+    form_data.append("content", content);
+    
+    $.ajax({
+      type: "POST",
+      enctype: 'multipart/form-data',
+      url: "create_jasoseo/",
+      data: form_data,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+
+        console.log("success")
+        $("#modify_jasoseo").hide()
+        location.reload();
+      },
+      beforeSend: function () {
+        console.log("beforesend")
+      },
+      complete: function () {
+        console.log("complete")
+      },
+      error: function (e) {
+        console.log("error", e);
+      }
+    });
+  }
+
+</script>
+{% endblock %}

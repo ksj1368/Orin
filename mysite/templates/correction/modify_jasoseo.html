@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <link href="{% static 'css/main.css' %}" rel="stylesheet">
+        <link href="{% static 'css/correction/modify_jasoseo.css' %}" rel="stylesheet">
+        <link href="{% static 'css/correction/my_manage.css' %}" rel="stylesheet">
+        <title>자기소개서 수정</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <p class="modify_jasoseo_modal">자기소개서 수정</p>
+        <hr>
+        <span data-dismiss = "myModal" class="close" onclick="close_j_modify_Modal()">&times;</span>
+        <p id="pk" style="display: none;">{{ jasoseo.pk }}</p>
+        <form method="POST" enctype="multipart/form-data" onsubmit="modify_jasoseo(event)">
+            {% csrf_token %}
+            <div class="category">
+                <label for="categorySelect">카테고리 *</label>
+                <select class="select" name="category" id="categorySelect">
+                    {% for category in category_list %}
+                        {% if category.id == jasoseo.category.id %}
+                            <option name="category" value="{{ category.pk }}" selected>{{ category.category_name }}</option>
+                        {% else %}
+                            <option name="category" value="{{ category.pk }}">{{ category.category_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+            </div>
+            <div class="title">
+                <label for="title">제목 * </label>
+                <input type="text" maxlength="45" name="title" id="title" {% if jasoseo.title %}value="{{ jasoseo.title }}"{% else %}{% endif %}>
+            </div>
+            <div class="content">
+                <label for="content">내용 *</label>
+                <textarea id="content" name="content">{% if jasoseo.content %}{{ jasoseo.content }}{% endif %}</textarea>
+            </div>
+
+            <div class="submitbutton">
+                <button id="submitbutton" type="submit">수정완료</button>
+            </div>
+        </form>
+    </body>
+</html>

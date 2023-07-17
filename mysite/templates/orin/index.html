@@ -1,0 +1,74 @@
+{% extends 'base2.html' %}
+{% block content %}
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <title>Orin</title>
+</head>
+
+<!-- 서비스 소개 영역(왼쪽) -->
+<div class='service_intro'>
+    <div class="service_button">
+        <ion-icon name="radio-button-on" class="" id="icon_service" data-index="0"></ion-icon>
+        <ion-icon name="radio-button-off" class="" id="icon_service" data-index="1"></ion-icon>
+        <ion-icon name="radio-button-off" class="" id="icon_service" data-index="2"></ion-icon>
+        <ion-icon name="radio-button-off" class="" id="icon_service" data-index="3"></ion-icon>
+        <ion-icon name="radio-button-off" class="" id="icon_service" data-index="4"></ion-icon>
+        <ion-icon name="radio-button-off" class="" id="icon_service" data-index="5"></ion-icon>
+    </div>
+
+    <div class="service" id="service0">        
+        <span id="service_category">문법 교정, 소제목 추천 서비스</span>
+        <img id="service_img" src="../../static/img/1_gra_sub_6.gif">
+    </div>
+    <div class="service" id="service1" style="display:none">
+        <span id="service_category">추천 유의어, 북마크 서비스</span>
+        <img id="service_img" src="../../static/img/2_sy_book_6.gif">
+    </div>
+    <div class="service" id="service2" style="display:none">
+        <span id="service_category">AI 자소서 코칭 서비스</span>
+        <img id="service_img" src="../../static/img/3_coaching_6.gif">
+    </div>
+    <div class="service" id="service3" style="display:none">
+        <span id="service_category">자기소개서 초안 생성 서비스</span>
+        <img id="service_img" src="../../static/img/5_draft_6.gif">
+    </div>
+    <div class="service" id="service4" style="display:none">
+        <span id="service_category">자기소개서 관리 서비스</span>
+        <img id="service_img" src="../../static/img/4_mypage_6.gif">
+    </div>
+    <div class="service" id="service5" style="display:none">
+        <span id="service_category">크롬 익스텐션 서비스</span>
+        <img id="service_img" src="../../static/img/6_extension_6.gif">
+    </div>
+    <ion-icon name="caret-forward-circle-sharp" id="icon_nextBtn"></ion-icon>
+</div>
+
+<!-- 슬로건, 메뉴, about(오른쪽) -->
+<div class='right_area'>
+    <div class='slogan'>
+        <p id='slogan1'>자기소개서,</p>
+        <p id='slogan2'><span style="color:var(--point_color)">오린</span>으로 완성.</p>
+        <span id='slogan_detail'>자기소개서 수정부터 관리까지 한 곳에서 해결하세요!</span>
+    </div>
+    <br><br>
+    <div class='button_area'>
+        {% if not user.is_authenticated %}
+            <button onclick="location.href='{% url 'common:login' %}'">로그인</button> &nbsp;&nbsp;&nbsp;
+            <button onclick="location.href='{% url 'common:register' %}'">회원가입</button>
+        {% else %}
+            <button onclick="location.href='{% url 'correction:index' %}'">교정하기</button> &nbsp;&nbsp;&nbsp;
+            <button onclick="location.href='{% url 'correction:my_manage' %}'">자소서 보관함</button>
+        {% endif %}
+    </div>
+    <br>
+    <div class='button_area'>
+        <ion-icon name="extension-puzzle-sharp" id='about_icon' onclick="window.open('https://chrome.google.com/webstore/detail/orin/namijdokbekjaambmiedmlkopggkiecd?hl=ko')"></ion-icon>
+        <span id='about'><a href='https://chrome.google.com/webstore/detail/orin/namijdokbekjaambmiedmlkopggkiecd?hl=ko' target='_blank' id='about_link'>&nbsp;크롬 익스텐션</a></span> &nbsp;&nbsp;&nbsp;
+        <ion-icon name="arrow-forward-circle-sharp" id='about_icon' onclick="location.href='{% url 'orin:about' %}'"></ion-icon>
+        <span id='about'><a href="{% url 'orin:about' %}" id='about_link'>&nbsp;더 알아보기</a></span>
+    </div>
+</div>
+
+<script type="text/javascript" src="{%static 'js/index.js' %}"></script>
+{% endblock %}
