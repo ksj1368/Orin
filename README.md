@@ -1,5 +1,4 @@
 # <img src="./mysite/static/img/logo_point.png" alt="Orinlogo" id="logo" height="40px;"> 오린 : 자기소개서 올인원 서비스
-- KT AIVLE School 3기 AI트랙 3조 빅프로젝트
 - 프로젝트 기간 : 2023.05.29 ~ 2023.07.11
 - <a href="https://drive.google.com/file/d/1t4_7KzQVug6OsgJlpAxVHiiK-Ao1_NUD/view?usp=drive_link" target="_blank" rel="noopener noreferrer">과제 정의서</a>
 <br>
